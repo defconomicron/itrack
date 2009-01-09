@@ -1,0 +1,17 @@
+<chart alternateHGridColor='CCCCCC' yAxisName='Traffic' formatNumberScale='0' labelStep='0' labelDisplay='ROTATE' slantLabels='1' rotateLabels='1' labelPadding='10' numDivLines='30' anchorRadius='2' canvasBorderThickness='1' borderColor='FFFFFF' bgColor='FFFFFF' showValues='0' labelDisplay='ROTATE' animation='0' showShadow='0' animation='0' lineThickness='1' showValues='1'>
+  <categories>
+    <% @hits.each do |h| %><category label='<%= h["created_at"].to_time.strftime("%m-%d-%Y %H:%M:%S") %>' /><% end %>
+  </categories>
+
+  <dataset seriesName='Hits' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FF0000'>
+    <% @hits.each do |h| %><set value='<%= h["hits"] %>' /><% end %>
+  </dataset>
+
+  <dataset seriesName='Visits' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='00FF00'>
+    <% @hits.each do |h| %><set value='<%= h["visits"] %>' /><% end %>
+  </dataset>
+
+  <dataset seriesName='Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FFFF00'>
+    <% @hits.each do |h| %><set value='<%= h["visitors"] %>' /><% end %>
+  </dataset>
+</chart>

@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  ip_address: MyString
+  cookie_id: MyString
+  referer: MyString
+  country: MyString
+  state: MyString
+  city: MyString
+  longitude: MyString
+  latitude: MyString
+
+two:
+  ip_address: MyString
+  cookie_id: MyString
+  referer: MyString
+  country: MyString
+  state: MyString
+  city: MyString
+  longitude: MyString
+  latitude: MyString

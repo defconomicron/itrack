@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <th>User Agent</th>
+    <th>Hits</th>
+    <th>Visits</th>
+    <th>Visitors</th>
+  </tr>
+  <% @hits.each do |hit| %>
+    <tr>
+      <td><%= link_to hit["http_user_agent"] || "", params.merge(:action => :set_http_user_agent, :http_user_agent => hit["http_user_agent"]) %></td>
+      <td><%= hit["hits"] %></td>
+      <td><%= hit["visits"] %></td>
+      <td><%= hit["visitors"] %></td>
+    </tr>
+  <% end %>
+</table>

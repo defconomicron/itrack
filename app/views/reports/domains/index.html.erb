@@ -1,0 +1,17 @@
+<table>
+  <tr>
+    <th>Domain</th>
+    <th>Hits</th>
+    <th>Visits</th>
+    <th>Visitors</th>
+    
+  </tr>
+  <% @hits.each do |hit| %>
+    <tr>
+      <td><%=link_to hit["domain"] || "", params.merge(:action => :set_domain, :domain => hit["domain"], :page => nil) %></td>
+      <td><%= hit["hits"] %></td>
+      <td><%= hit["visits"] %></td>
+      <td><%= hit["visitors"] %></td>
+    </tr>
+  <% end %>
+</table>

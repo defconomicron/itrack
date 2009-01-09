@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <th>City</th>
+    <th>Hits</th>
+    <th>Visits</th>
+    <th>Visitors</th>
+  </tr>
+  <% @hits.each do |hit| %>
+    <tr>
+      <td><%= link_to hit["city"], params.merge(:action => :set_city, :city => hit["city"]) %></td>
+      <td><%= hit["hits"] %></td>
+      <td><%= hit["visits"] %></td>
+      <td><%= hit["visitors"] %></td>
+    </tr>
+  <% end %>
+</table>
