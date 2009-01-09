@@ -1,6 +1,11 @@
-<% if (params.keys - %w{start_time end_time period controller action}).length != 0 %>
-  <p>
-    <b>Filters:</b>
+<p>
+  <b>Filters:</b>
+  <center>
+    <p>
+      <%= [format_datetime3(params[:start_time]), format_datetime3(params[:end_time])] * " - " %>
+    </p>
+  </center>
+  <% if (params.keys - %w{start_time end_time period controller action}).length != 0 %>
     <ul>
       <% params.keys.each do |key| %>
         <% next if %w{start_time end_time period controller action}.include?(key) %>
@@ -10,5 +15,6 @@
       <% end %>
     </ul>
     <%= link_to("[CLEAR FILTERS]", :action => "index") %>
-  </p>
-<% end %>
+  <% end %>
+</p>
+
