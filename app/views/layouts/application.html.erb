@@ -8,6 +8,8 @@
   </head>
   <body onload="display();">
     <p style="color: green"><%= flash[:notice] %></p>
+    <center><%= [format_datetime3(params[:start_time]), format_datetime3(params[:end_time])] * " - " %></center>
+    <br/>
     <%= render :partial => "layouts/reports" %>
     <%= render :partial => "layouts/filters" %>
     <%= yield %>
