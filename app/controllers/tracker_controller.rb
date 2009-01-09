@@ -22,7 +22,7 @@ class TrackerController < ApplicationController
     
     create_visitor if new_visitor?
     create_visit if new_visit?    
-        
+    
     render :file => "#{RAILS_ROOT}/public/images/spacer.gif"
   end
   
@@ -74,7 +74,7 @@ class TrackerController < ApplicationController
     def http_accept_language
       request.env["HTTP_ACCEPT_LANGUAGE"]
     end
-  
+    
     def http_user_agent
       request.env["HTTP_USER_AGENT"]
     end
