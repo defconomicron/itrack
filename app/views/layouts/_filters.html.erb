@@ -1,12 +1,14 @@
-<p>
-  Filters:
-  <ul>
-    <% params.keys.each do |key| %>
-      <% next if %w{controller action}.include?(key) %>
-      <li>
-        <%= link_to "#{key} = #{params[key]}", params.merge(:controller => params[:controller], :action => params[:action], key => nil) %>
-      </li>
-    <% end %>
-  </ul>
-  <%= link_to("[CLEAR FILTERS]", :action => "index") if (params.keys - %w{controller action}).length != 0 %>
-</p>
+<% if (params.keys - %w{controller action}).length != 0 %>
+  <p>
+    Filters:
+    <ul>
+      <% params.keys.each do |key| %>
+        <% next if %w{controller action}.include?(key) %>
+        <li>
+          <%= link_to "#{key} = #{params[key]}", params.merge(:controller => params[:controller], :action => params[:action], key => nil) %>
+        </li>
+      <% end %>
+    </ul>
+    <%= link_to("[CLEAR FILTERS]", :action => "index") %>
+  </p>
+<% end %>
