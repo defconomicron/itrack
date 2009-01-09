@@ -14,8 +14,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time  => start_time)
-    conditions2.merge!(:end_time    => end_time)
+    conditions2.merge!(:start_time  => params[:start_time])
+    conditions2.merge!(:end_time    => params[:end_time])
     conditions2.merge!(:domain      => params[:domain]) if params[:domain]
     conditions2.merge!(:page        => params[:page]) if params[:page]
     conditions2.merge!(:country     => params[:country]) if params[:country]
@@ -28,26 +28,26 @@ class Hit < ActiveRecord::Base
     
     query("
       select
-        strftime('#{hour}', created_at) as created_at,
+        strftime('#{eval(params[:period])}', created_at) as created_at,
         sum(hits) as hits,
         sum(visitors) as visitors,
         sum(visits) as visits
       from (
         select
-          strftime('#{hour}', created_at) as created_at,
+          strftime('#{eval(params[:period])}', created_at) as created_at,
           count(id) as hits,
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
         where #{sqa}
-        group by strftime('#{hour}', created_at)
+        group by strftime('#{eval(params[:period])}', created_at)
         
         union
         
         #{zero_buffer(params)}
       )
-      group by strftime('#{hour}', created_at)
-      order by strftime('#{hour}', created_at)
+      group by strftime('#{eval(params[:period])}', created_at)
+      order by strftime('#{eval(params[:period])}', created_at)
     ")
   end
   
@@ -65,8 +65,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time => start_time)
-    conditions2.merge!(:end_time => end_time)
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time => params[:end_time])
     conditions2.merge!(:domain => params[:domain]) if params[:domain]
     conditions2.merge!(:page => params[:page]) if params[:page]
     conditions2.merge!(:country => params[:country]) if params[:country]
@@ -103,8 +103,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time => start_time)
-    conditions2.merge!(:end_time => end_time)
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time => params[:end_time])
     conditions2.merge!(:domain => params[:domain]) if params[:domain]
     conditions2.merge!(:page => params[:page]) if params[:page]
     conditions2.merge!(:country => params[:country]) if params[:country]
@@ -140,8 +140,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time => start_time)
-    conditions2.merge!(:end_time   => end_time)
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time   => params[:end_time])
     conditions2.merge!(:page       => params[:page]) if params[:page]
     conditions2.merge!(:country    => params[:country]) if params[:country]
     conditions2.merge!(:region     => params[:region]) if params[:region]
@@ -177,8 +177,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time  => start_time)
-    conditions2.merge!(:end_time    => end_time)
+    conditions2.merge!(:start_time  => params[:start_time])
+    conditions2.merge!(:end_time    => params[:end_time])
     conditions2.merge!(:domain      => params[:domain]) if params[:domain]
     conditions2.merge!(:country     => params[:country]) if params[:country]
     conditions2.merge!(:region      => params[:region]) if params[:region]
@@ -213,8 +213,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time => start_time)
-    conditions2.merge!(:end_time   => end_time)
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time   => params[:end_time])
     conditions2.merge!(:domain     => params[:domain]) if params[:domain]
     conditions2.merge!(:page       => params[:page]) if params[:page]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
@@ -248,8 +248,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time => start_time)
-    conditions2.merge!(:end_time   => end_time)
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time   => params[:end_time])
     conditions2.merge!(:domain     => params[:domain]) if params[:domain]
     conditions2.merge!(:page       => params[:page]) if params[:page]
     conditions2.merge!(:country    => params[:country]) if params[:country]
@@ -285,8 +285,8 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time => start_time)
-    conditions2.merge!(:end_time   => end_time)
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time   => params[:end_time])
     conditions2.merge!(:domain     => params[:domain]) if params[:domain]
     conditions2.merge!(:page       => params[:page]) if params[:page]
     conditions2.merge!(:country    => params[:country]) if params[:country]
@@ -316,22 +316,18 @@ class Hit < ActiveRecord::Base
     end
     
     def self.zero_buffer(params)
-      a = start_time
-      b = end_time
+      a = params[:start_time]
+      b = params[:end_time]
       hits = []
-      hits << "select '#{a.strftime(hour)}' as created_at, 0 as hits, 0 as visits, 0 as visitors" while (a += eval("1.hour")) < b
+      hits << "select '#{a.strftime(eval(params[:period]))}' as created_at, 0 as hits, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
       return hits * " union "
-    end
-  
-    def self.start_time
-      7.days.ago
-    end
-    
-    def self.end_time
-      Time.now
     end
     
     def self.hour
       "%Y-%m-%d %H:00:00"
+    end
+    
+    def self.minute
+      "%Y-%m-%d %H:%M:00"
     end
 end

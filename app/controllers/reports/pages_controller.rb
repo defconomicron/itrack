@@ -1,4 +1,4 @@
-class Reports::PagesController < ApplicationController  
+class Reports::PagesController < Reports::BaseController  
   def index
     @hits = Hit.pages(params)
   end

@@ -1,4 +1,4 @@
-class Reports::HttpUserAgentsController < ApplicationController
+class Reports::HttpUserAgentsController < Reports::BaseController
   def index
     @hits = Hit.http_user_agents(params)
   end

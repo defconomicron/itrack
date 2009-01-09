@@ -1,4 +1,4 @@
-class Reports::TrafficController < ApplicationController
+class Reports::TrafficController < Reports::BaseController
   def index
     @hits = Hit.traffic(params)
   end

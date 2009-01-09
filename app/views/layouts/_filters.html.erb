@@ -1,9 +1,9 @@
-<% if (params.keys - %w{controller action}).length != 0 %>
+<% if (params.keys - %w{start_time end_time period controller action}).length != 0 %>
   <p>
     Filters:
     <ul>
       <% params.keys.each do |key| %>
-        <% next if %w{controller action}.include?(key) %>
+        <% next if %w{start_time end_time period controller action}.include?(key) %>
         <li>
           <%= link_to "#{key} = #{params[key]}", params.merge(:controller => params[:controller], :action => params[:action], key => nil) %>
         </li>

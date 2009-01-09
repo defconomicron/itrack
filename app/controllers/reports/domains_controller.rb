@@ -1,4 +1,4 @@
-class Reports::DomainsController < ApplicationController  
+class Reports::DomainsController < Reports::BaseController  
   def index
     @hits = Hit.domains(params)
   end

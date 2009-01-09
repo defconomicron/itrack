@@ -1,4 +1,4 @@
-class Reports::HttpAcceptLanguagesController < ApplicationController
+class Reports::HttpAcceptLanguagesController < Reports::BaseController
   def index
     @hits = Hit.http_accept_languages(params)
   end

@@ -1,4 +1,4 @@
-class Reports::CountriesController < ApplicationController
+class Reports::CountriesController < Reports::BaseController
   def index
     @hits = Hit.countries(params)
   end

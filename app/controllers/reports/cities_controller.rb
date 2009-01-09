@@ -1,4 +1,4 @@
-class Reports::CitiesController < ApplicationController
+class Reports::CitiesController < Reports::BaseController
   def index
     @hits = Hit.cities(params)
   end
