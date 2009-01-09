@@ -1,6 +1,6 @@
 <% if (params.keys - %w{start_time end_time period controller action}).length != 0 %>
   <p>
-    Filters:
+    <b>Filters:</b>
     <ul>
       <% params.keys.each do |key| %>
         <% next if %w{start_time end_time period controller action}.include?(key) %>

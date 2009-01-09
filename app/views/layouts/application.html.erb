@@ -4,12 +4,16 @@
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title>iTrack</title>
+    <%= stylesheet_link_tag 'scaffold' %>
     <%= javascript_include_tag 'FusionCharts' %>
+    <%= javascript_include_tag 'reload' %>
   </head>
   <body onload="display();">
     <p style="color: green"><%= flash[:notice] %></p>
     <center><%= [format_datetime3(params[:start_time]), format_datetime3(params[:end_time])] * " - " %></center>
     <br/>
+    <div id="d2" name="d2" style="float:right"></div>
+    <div style="float:right;padding-right:10px"><b>Next Reload:</b></div>
     <%= render :partial => "layouts/reports" %>
     <%= render :partial => "layouts/filters" %>
     <%= yield %>
