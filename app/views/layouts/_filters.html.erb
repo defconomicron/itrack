@@ -1,9 +1,7 @@
 <p>
   <b>Filters:</b>
   <center>
-    <p>
-      <%= [format_datetime3(params[:start_time]), format_datetime3(params[:end_time])] * " - " %>
-    </p>
+    <%= [format_datetime3(params[:start_time]), format_datetime3(params[:end_time])] * " - " %>
   </center>
   <% if (params.keys - %w{start_time end_time period controller action}).length != 0 %>
     <ul>
