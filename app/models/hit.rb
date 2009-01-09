@@ -324,7 +324,7 @@ class Hit < ActiveRecord::Base
     end
   
     def self.start_time
-      2.days.ago
+      7.days.ago
     end
     
     def self.end_time
