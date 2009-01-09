@@ -64,7 +64,7 @@ class TrackerController < ApplicationController
     end
     
     def unique(t)
-      t + "_" + ([domain, page] * "").sha2
+      t + "_" + ([domain, page] * "").sha1
     end
     
     def referer
