@@ -52,15 +52,19 @@ class TrackerController < ApplicationController
     end
     
     def create_visitor
-      cookies[:visitor] = {:value => "1"}
+      cookies[unique("visitor")] = {:value => "1"}
     end
     
     def create_visit
-      cookies[:visit] = {:value => "1", :expires => 1.hour.from_now}
+      cookies[unique("visit")] = {:value => "1", :expires => 1.hour.from_now}
     end
     
     def cookie_id
-      cookies[:id] ||= {:value => rand(10000000000000000000000000000000000000).to_s}
+      cookies[unique("id")] ||= {:value => rand(10000000000000000000000000000000000000).to_s}
+    end
+    
+    def unique(t)
+      t + "_" + ([domain, page] * "").sha2
     end
     
     def referer
