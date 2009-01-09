@@ -1,0 +1,1 @@
+Requires GeoIP.dat from http://www.maxmind.com/
