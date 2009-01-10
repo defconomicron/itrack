@@ -52,7 +52,7 @@ class TrackerController < ApplicationController
     end
     
     def create_visitor
-      cookies[unique("visitor")] = {:value => "1"}
+      cookies[unique("visitor")] = {:value => "1", :expires => 999.years.from_now}
     end
     
     def create_visit
@@ -60,7 +60,7 @@ class TrackerController < ApplicationController
     end
     
     def cookie_id
-      cookies[unique("id")] ||= {:value => rand(10000000000000000000000000000000000000).to_s}
+      cookies[unique("id")] ||= {:value => rand(10000000000000000000000000000000000000).to_s, :expires => 999.years.from_now}
     end
     
     def unique(t)
