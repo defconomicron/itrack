@@ -1,4 +1,4 @@
-<chart alternateHGridColor='CCCCCC' yAxisName='Traffic' formatNumberScale='0' labelStep='2' labelDisplay='ROTATE' slantLabels='1' rotateLabels='1' labelPadding='10' numDivLines='30' anchorRadius='2' canvasBorderThickness='1' borderColor='FFFFFF' bgColor='FFFFFF' showValues='0' labelDisplay='ROTATE' animation='0' showShadow='0' animation='0' lineThickness='1' showValues='1'>
+<chart alternateHGridColor='CCCCCC' yAxisName='Traffic' formatNumberScale='0' labelStep='3' labelDisplay='ROTATE' slantLabels='1' rotateLabels='1' labelPadding='10' numDivLines='30' anchorRadius='2' canvasBorderThickness='1' borderColor='FFFFFF' bgColor='FFFFFF' showValues='0' labelDisplay='ROTATE' animation='0' showShadow='0' animation='0' lineThickness='1' showValues='1'>
   <categories>
     <% @hits.each do |h| %><category label='<%= format_datetime1(h["created_at"]) %>' /><% end %>
   </categories>
