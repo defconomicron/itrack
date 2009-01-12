@@ -308,13 +308,17 @@ class Hit < ActiveRecord::Base
       order by hits desc
     ")
   end
-  
+
+  def clean
+    query("delete from hits where created_at < '#{1.week.ago}'")
+  end
+    
   private
   
     def self.query(str)
-      ActiveRecord::Base::connection.select_all(str)
+      connection.select_all(str)
     end
-    
+      
     def self.zero_buffer(params)
       a = params[:start_time]
       b = params[:end_time]
