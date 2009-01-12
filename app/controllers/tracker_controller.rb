@@ -20,8 +20,8 @@ class TrackerController < ApplicationController
                 }
               )
     
-    create_visitor if new_visitor?
-    create_visit if new_visit?    
+    visitor
+    visit    
     
     render :file => "#{RAILS_ROOT}/public/images/spacer.gif"
   end
@@ -44,19 +44,19 @@ class TrackerController < ApplicationController
     end
     
     def new_visitor?
-      return true if cookies[:visitor].blank?
+      return true if cookies[unique("visitor")].blank?
     end
     
     def new_visit?
-      return true if cookies[:visit].blank?
+      return true if cookies[unique("visit")].blank?
     end
     
-    def create_visitor
-      cookies[unique("visitor")] = {:value => "1", :expires => 10.years.from_now}
+    def visitor
+      cookies[unique("visitor")] ||= {:value => "1", :expires => 10.years.from_now}
     end
     
-    def create_visit
-      cookies[unique("visit")] = {:value => "1", :expires => 1.hour.from_now}
+    def visit
+      cookies[unique("visit")] ||= {:value => "1", :expires => 1.hour.from_now}
     end
     
     def cookie_id
