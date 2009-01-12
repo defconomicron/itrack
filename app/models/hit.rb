@@ -309,7 +309,7 @@ class Hit < ActiveRecord::Base
     ")
   end
 
-  def clean
+  def self.clean
     query("delete from hits where created_at < '#{1.week.ago}'")
   end
     
