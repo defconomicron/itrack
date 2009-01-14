@@ -5,10 +5,10 @@ class TrackerController < ApplicationController
     Hit.create(
                 {
                   :domain               => domain,
-                  :url                 => url,
+                  :url                  => url,
                   :ip_address           => ip_address,
-                  :new_visitor          => new_visitor?,
-                  :new_visit            => new_visit?,
+                  :new_visitor          => is_new_visitor?,
+                  :new_visit            => is_new_visit?,
                   :cookie_id            => cookie_id,
                   :country              => geo_ip.country,
                   :region               => geo_ip.region,
@@ -20,8 +20,8 @@ class TrackerController < ApplicationController
                 }
               )
     
-    visitor
-    visit    
+    new_visitor
+    new_visit    
     
     render :file => "#{RAILS_ROOT}/public/images/spacer.gif"
   end
@@ -43,19 +43,19 @@ class TrackerController < ApplicationController
       "0.0.0.0"
     end
     
-    def new_visitor?
+    def is_new_visitor?
       return true if cookies[unique("visitor")].blank?
     end
     
-    def new_visit?
+    def is_new_visit?
       return true if cookies[unique("visit")].blank?
     end
     
-    def visitor
+    def new_visitor
       cookies[unique("visitor")] ||= {:value => "1", :expires => 10.years.from_now}
     end
     
-    def visit
+    def new_visit
       cookies[unique("visit")] ||= {:value => "1", :expires => 1.hour.from_now}
     end
     
