@@ -7,11 +7,11 @@
     <% @hits.each do |h| %><set value='<%= h.hits %>' /><% end %>
   </dataset>
 
-  <dataset seriesName='Visits' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='00FF00'>
+  <dataset seriesName='Visits' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='00AA00'>
     <% @hits.each do |h| %><set value='<%= h.visits %>' /><% end %>
   </dataset>
 
-  <dataset seriesName='Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FFFF00'>
+  <dataset seriesName='Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FF9900'>
     <% @hits.each do |h| %><set value='<%= h.visitors %>' /><% end %>
   </dataset>
 </chart>
