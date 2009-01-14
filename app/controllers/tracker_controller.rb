@@ -5,7 +5,7 @@ class TrackerController < ApplicationController
     Hit.create(
                 {
                   :domain               => domain,
-                  :page                 => page,
+                  :url                 => url,
                   :ip_address           => ip_address,
                   :new_visitor          => new_visitor?,
                   :new_visit            => new_visit?,
@@ -32,7 +32,7 @@ class TrackerController < ApplicationController
       referer.split("/")[2].split(".")[-2..-1].join(".") if referer
     end
     
-    def page
+    def url
       referer
     end
     
@@ -64,7 +64,7 @@ class TrackerController < ApplicationController
     end
     
     def unique(t)
-      ([t, domain, page] * "").sha1
+      ([t, domain, url] * "").sha1
     end
     
     def referer

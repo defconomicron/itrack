@@ -1,9 +1,9 @@
-class Reports::PagesController < Reports::BaseController  
+class Reports::UrlsController < Reports::BaseController  
   def index
-    @hits = Hit.pages(params)
+    @hits = Hit.urls(params)
   end
   
-  def set_page
+  def set_url
     params[:controller] = "traffic"
     params[:action] = "index"
     redirect_to(params)

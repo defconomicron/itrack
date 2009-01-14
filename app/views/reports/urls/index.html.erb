@@ -1,6 +1,6 @@
 <table>
   <tr>
-    <th>Page</th>
+    <th>URL</th>
     <th>Hits</th>
     <th>Visits</th>
     <th>Visitors</th>
@@ -8,7 +8,7 @@
   </tr>
   <% @hits.each do |hit| %>
     <tr>
-      <td><%=link_to hit.page || "", params.merge(:action => :set_page, :page => hit.page) %></td>
+      <td><%=link_to hit.url || "", params.merge(:action => :set_url, :url => hit.url) %></td>
       <td><%= hit.hits %></td>
       <td><%= hit.visits %></td>
       <td><%= hit.visitors %></td>

@@ -4,7 +4,7 @@ class Hit < ActiveRecord::Base
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"
     conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "page = :page" if params[:page]
+    conditions1 << "url = :url" if params[:url]
     conditions1 << "country = :country" if params[:country]
     conditions1 << "region = :region" if params[:region]
     conditions1 << "city = :city" if params[:city]
@@ -17,7 +17,7 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:start_time  => params[:start_time])
     conditions2.merge!(:end_time    => params[:end_time])
     conditions2.merge!(:domain      => params[:domain]) if params[:domain]
-    conditions2.merge!(:page        => params[:page]) if params[:page]
+    conditions2.merge!(:url        => params[:url]) if params[:url]
     conditions2.merge!(:country     => params[:country]) if params[:country]
     conditions2.merge!(:region      => params[:region]) if params[:region]
     conditions2.merge!(:city        => params[:city]) if params[:city]
@@ -56,7 +56,7 @@ class Hit < ActiveRecord::Base
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"
     conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "page = :page" if params[:page]
+    conditions1 << "url = :url" if params[:url]
     conditions1 << "country = :country" if params[:country]
     conditions1 << "region = :region" if params[:region]
     conditions1 << "city = :city" if params[:city]
@@ -68,7 +68,7 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:start_time => params[:start_time])
     conditions2.merge!(:end_time => params[:end_time])
     conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:page => params[:page]) if params[:page]
+    conditions2.merge!(:url => params[:url]) if params[:url]
     conditions2.merge!(:country => params[:country]) if params[:country]
     conditions2.merge!(:region => params[:region]) if params[:region]
     conditions2.merge!(:city => params[:city]) if params[:city]
@@ -97,7 +97,7 @@ class Hit < ActiveRecord::Base
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"
     conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "page = :page" if params[:page]
+    conditions1 << "url = :url" if params[:url]
     conditions1 << "country = :country" if params[:country]
     conditions1 << "region = :region" if params[:region]
     conditions1 << "city = :city" if params[:city]
@@ -109,7 +109,7 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:start_time => params[:start_time])
     conditions2.merge!(:end_time => params[:end_time])
     conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:page => params[:page]) if params[:page]
+    conditions2.merge!(:url => params[:url]) if params[:url]
     conditions2.merge!(:country => params[:country]) if params[:country]
     conditions2.merge!(:region => params[:region]) if params[:region]
     conditions2.merge!(:city => params[:city]) if params[:city]
@@ -137,7 +137,7 @@ class Hit < ActiveRecord::Base
     conditions1 = []
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"
-    conditions1 << "page = :page" if params[:page]
+    conditions1 << "url = :url" if params[:url]
     conditions1 << "country = :country" if params[:country]
     conditions1 << "region = :region" if params[:region]
     conditions1 << "city = :city" if params[:city]
@@ -148,7 +148,7 @@ class Hit < ActiveRecord::Base
     conditions2 = {}
     conditions2.merge!(:start_time => params[:start_time])
     conditions2.merge!(:end_time   => params[:end_time])
-    conditions2.merge!(:page       => params[:page]) if params[:page]
+    conditions2.merge!(:url       => params[:url]) if params[:url]
     conditions2.merge!(:country    => params[:country]) if params[:country]
     conditions2.merge!(:region     => params[:region]) if params[:region]
     conditions2.merge!(:city       => params[:city]) if params[:city]
@@ -173,7 +173,7 @@ class Hit < ActiveRecord::Base
     )
   end
   
-  def self.pages(params)
+  def self.urls(params)
     conditions1 = []
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"
@@ -199,13 +199,13 @@ class Hit < ActiveRecord::Base
     
     paginate_by_sql("
         select
-          page,
+          url,
           count(id) as hits,
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
         where #{sqa}
-        group by page
+        group by url
         order by hits desc
       ",
       :page     => params[:page],
@@ -218,7 +218,7 @@ class Hit < ActiveRecord::Base
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"
     conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "page = :page" if params[:page]
+    conditions1 << "url = :url" if params[:url]
     conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
     conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
 
@@ -228,7 +228,7 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:start_time => params[:start_time])
     conditions2.merge!(:end_time   => params[:end_time])
     conditions2.merge!(:domain     => params[:domain]) if params[:domain]
-    conditions2.merge!(:page       => params[:page]) if params[:page]
+    conditions2.merge!(:url       => params[:url]) if params[:url]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
  
@@ -255,7 +255,7 @@ class Hit < ActiveRecord::Base
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"    
     conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "page = :page" if params[:page]
+    conditions1 << "url = :url" if params[:url]
     conditions1 << "country = :country" if params[:country]
     conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
     conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
@@ -266,7 +266,7 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:start_time => params[:start_time])
     conditions2.merge!(:end_time   => params[:end_time])
     conditions2.merge!(:domain     => params[:domain]) if params[:domain]
-    conditions2.merge!(:page       => params[:page]) if params[:page]
+    conditions2.merge!(:url       => params[:url]) if params[:url]
     conditions2.merge!(:country    => params[:country]) if params[:country]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
@@ -294,7 +294,7 @@ class Hit < ActiveRecord::Base
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"    
     conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "page = :page" if params[:page]
+    conditions1 << "url = :url" if params[:url]
     conditions1 << "country = :country" if params[:country]
     conditions1 << "region = :region" if params[:region]
     conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
@@ -306,7 +306,7 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:start_time => params[:start_time])
     conditions2.merge!(:end_time   => params[:end_time])
     conditions2.merge!(:domain     => params[:domain]) if params[:domain]
-    conditions2.merge!(:page       => params[:page]) if params[:page]
+    conditions2.merge!(:url       => params[:url]) if params[:url]
     conditions2.merge!(:country    => params[:country]) if params[:country]
     conditions2.merge!(:region     => params[:region]) if params[:region]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]

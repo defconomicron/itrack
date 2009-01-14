@@ -2,7 +2,7 @@ class CreateHits < ActiveRecord::Migration
   def self.up
     create_table :hits do |t|
       t.string  :domain
-      t.string  :page
+      t.string  :url
       t.string  :ip_address
       t.string  :cookie_id
       t.string  :country

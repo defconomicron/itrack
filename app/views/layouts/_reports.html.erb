@@ -1,4 +1,4 @@
-<% %w{traffic domains pages countries regions cities http_accept_languages http_user_agents}.each do |report| %>
+<% %w{traffic domains urls countries regions cities http_accept_languages http_user_agents}.each do |report| %>
   [<%= link_to report.capitalize, params.merge(:controller => report) %>]
 <% end %>
 <br/>
