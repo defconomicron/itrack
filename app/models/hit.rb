@@ -28,26 +28,26 @@ class Hit < ActiveRecord::Base
     
     query("
       select
-        strftime('#{eval(params[:period])}', created_at) as created_at,
+        strftime('#{params[:strftime]}', created_at) as created_at,
         sum(hits) as hits,
         sum(visitors) as visitors,
         sum(visits) as visits
       from (
         select
-          strftime('#{eval(params[:period])}', created_at) as created_at,
+          strftime('#{params[:strftime]}', created_at) as created_at,
           count(id) as hits,
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
         where #{sqa}
-        group by strftime('#{eval(params[:period])}', created_at)
+        group by strftime('#{params[:strftime]}', created_at)
         
         union
         
         #{zero_buffer(params)}
       )
-      group by strftime('#{eval(params[:period])}', created_at)
-      order by strftime('#{eval(params[:period])}', created_at)
+      group by strftime('#{params[:strftime]}', created_at)
+      order by strftime('#{params[:strftime]}', created_at)
     ")
   end
   
@@ -323,15 +323,7 @@ class Hit < ActiveRecord::Base
       a = params[:start_time]
       b = params[:end_time]
       hits = []
-      hits << "select '#{a.strftime(eval(params[:period]))}' as created_at, 0 as hits, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
+      hits << "select '#{a.strftime(params[:strftime])}' as created_at, 0 as hits, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
       return hits * " union "
-    end
-    
-    def self.hour
-      "%Y-%m-%d %H:00:00"
-    end
-    
-    def self.minute
-      "%Y-%m-%d %H:%M:00"
     end
 end

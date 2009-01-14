@@ -8,4 +8,17 @@ module ApplicationHelper
     strFlashVars = "&chartWidth=#{chartWidth}&chartHeight=#{chartHeight}&debugMode=#{boolToNum(debugMode)}" << (strXML == "" ? "&dataURL=#{strURL}" : "&dataXML=#{strXML}")
 		"<embed wmode=\"transparent\" src=\"#{chartSWF}\" FlashVars=\"#{strFlashVars}\" quality=\"high\" width=\"#{chartWidth}\" height=\"#{chartHeight}\" name=\"#{chartId}\" allowScriptAccess=\"always\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\" />"    
   end
+  
+  def time_spans
+    [
+      "Last 1 hour",
+      "Last 2 hours",
+      "Last 3 hours",
+      "Last 8 hours",
+      "Last 24 hours",
+      "Last 2 days",
+      "Last 3 days",
+      "Last 7 days"
+    ]
+  end
 end
