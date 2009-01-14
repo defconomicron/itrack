@@ -10,13 +10,17 @@ module Reports::TrafficHelper
   
   def format_graph_datetime(curr, prev)
     if (prev.nil? || curr.to_time.day != prev.to_time.day)
-      return curr.to_time.strftime("%a %I:%M %p") if params[:period] == "minute"
-      return curr.to_time.strftime("%a %I %p") if params[:period] == "hour"
+      hour = curr.to_time.strftime("%I").to_i
+      am_pm = curr.to_time.strftime("%p")[0..0]
+      return curr.to_time.strftime("%a #{hour}:%M #{am_pm}") if params[:period] == "minute"
+      return curr.to_time.strftime("%a #{hour} #{am_pm}") if params[:period] == "hour"
     end
     
     if (prev.nil? || curr.to_time.day == prev.to_time.day)
-      return curr.to_time.strftime("%I:%M %p") if params[:period] == "minute"
-      return curr.to_time.strftime("%I %p") if params[:period] == "hour"
+      hour = curr.to_time.strftime("%I").to_i
+      am_pm = curr.to_time.strftime("%p")[0..0]
+      return curr.to_time.strftime("#{hour}:%M #{am_pm}") if params[:period] == "minute"
+      return curr.to_time.strftime("#{hour} #{am_pm}") if params[:period] == "hour"
     end
   end
   
