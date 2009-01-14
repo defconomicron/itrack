@@ -9,11 +9,11 @@ module Reports::TrafficHelper
   end
   
   def format_graph_datetime(curr, prev)
-    return curr.to_time.strftime("%a %I:%M %p") if params[:period] == "minute" && prev && curr.to_time.hour != prev.to_time.hour
-    return curr.to_time.strftime("%I:%M %p")    if params[:period] == "minute" && prev && curr.to_time.hour == prev.to_time.hour
+    return curr.to_time.strftime("%a %I:%M %p") if params[:period] == "minute" && (prev.nil? || curr.to_time.hour != prev.to_time.hour)
+    return curr.to_time.strftime("%I:%M %p")    if params[:period] == "minute" && (prev.nil? || curr.to_time.hour == prev.to_time.hour)
     
-    return curr.to_time.strftime("%a %I %p") if params[:period] == "hour" && prev && curr.to_time.day != prev.to_time.day
-    return curr.to_time.strftime("%I %p")    if params[:period] == "hour" && prev && curr.to_time.day == prev.to_time.day
+    return curr.to_time.strftime("%a %I %p") if params[:period] == "hour" && (prev.nil? || curr.to_time.day != prev.to_time.day)
+    return curr.to_time.strftime("%I %p")    if params[:period] == "hour" && (prev.nil? || curr.to_time.day == prev.to_time.day)
   end
   
   def format_datetime(s)
