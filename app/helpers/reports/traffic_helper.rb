@@ -8,15 +8,15 @@ module Reports::TrafficHelper
 		"<embed wmode=\"transparent\" src=\"#{chartSWF}\" FlashVars=\"#{strFlashVars}\" quality=\"high\" width=\"#{chartWidth}\" height=\"#{chartHeight}\" name=\"#{chartId}\" allowScriptAccess=\"always\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\" />"    
   end
   
-  def format_datetime(s, prev)
-    return s.to_time.strftime("%a %I:%M %p") if params[:period] == "minute" && prev && s.to_time.hour != prev.to_time.hour
-    return s.to_time.strftime("%I:%M %p")    if params[:period] == "minute" && prev && s.to_time.hour == prev.to_time.hour
+  def format_graph_datetime(curr, prev)
+    return curr.to_time.strftime("%a %I:%M %p") if params[:period] == "minute" && prev && curr.to_time.hour != prev.to_time.hour
+    return curr.to_time.strftime("%I:%M %p")    if params[:period] == "minute" && prev && curr.to_time.hour == prev.to_time.hour
     
-    return s.to_time.strftime("%a %I %p") if params[:period] == "hour" && prev && s.to_time.day != prev.to_time.day
-    return s.to_time.strftime("%I %p")    if params[:period] == "hour" && prev && s.to_time.day == prev.to_time.day
+    return curr.to_time.strftime("%a %I %p") if params[:period] == "hour" && prev && curr.to_time.day != prev.to_time.day
+    return curr.to_time.strftime("%I %p")    if params[:period] == "hour" && prev && curr.to_time.day == prev.to_time.day
   end
   
-  def format_datetime3(s)
+  def format_datetime(s)
     s.to_time.strftime("%a %m-%d-%Y %I:%M:%S %p")
   end
 end

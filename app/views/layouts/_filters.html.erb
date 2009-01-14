@@ -1,7 +1,7 @@
 <p>
   <b>Filters:</b>
   <center>
-    <%= [format_datetime3(params[:start_time]), format_datetime3(params[:end_time])] * " - " %>
+    <%= [format_datetime(params[:start_time]), format_datetime(params[:end_time])] * " - " %>
   </center>
 
   <% form_tag("/reports/traffic/search") do %>

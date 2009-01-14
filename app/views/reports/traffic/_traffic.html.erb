@@ -2,7 +2,7 @@
   <categories>
     <% prev = nil %>
     <% @hits.each do |h| %>
-      <category label='<%= format_datetime(h.created_at, prev) %>' />
+      <category label='<%= format_graph_datetime(h.created_at, prev) %>' />
       <% prev = h.created_at %>
     <% end %>
   </categories>
