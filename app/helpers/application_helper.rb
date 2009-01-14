@@ -21,4 +21,17 @@ module ApplicationHelper
       "Last 7 days"
     ]
   end
+  
+  def sort_control(title, default_order)
+    image = ""
+    if params[:order] && params[:order].split(" ")[0] == default_order.split(" ")[0]
+      column = params[:order].split(" ")[0]
+      polarity = params[:order].split(" ")[1] == "asc" ? "desc" : "asc"
+      image = (polarity == "asc" ? image_tag("ico_down_arrow.gif", :border => 0) : image_tag("ico_up_arrow.gif", :border => 0))
+    else
+      column = default_order.split(" ")[0]
+      polarity = default_order.split(" ")[1]
+    end
+    link_to("#{title} #{image}", {:params => params.merge({:order => "#{column} #{polarity}"})})
+  end
 end

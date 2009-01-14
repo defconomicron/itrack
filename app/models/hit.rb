@@ -14,15 +14,15 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time  => params[:start_time])
-    conditions2.merge!(:end_time    => params[:end_time])
-    conditions2.merge!(:domain      => params[:domain]) if params[:domain]
-    conditions2.merge!(:url        => params[:url]) if params[:url]
-    conditions2.merge!(:country     => params[:country]) if params[:country]
-    conditions2.merge!(:region      => params[:region]) if params[:region]
-    conditions2.merge!(:city        => params[:city]) if params[:city]
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time => params[:end_time])
+    conditions2.merge!(:domain => params[:domain]) if params[:domain]
+    conditions2.merge!(:url => params[:url]) if params[:url]
+    conditions2.merge!(:country => params[:country]) if params[:country]
+    conditions2.merge!(:region => params[:region]) if params[:region]
+    conditions2.merge!(:city => params[:city]) if params[:city]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
@@ -75,6 +75,7 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
+    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
     
     paginate_by_sql("
         select
@@ -85,7 +86,7 @@ class Hit < ActiveRecord::Base
         from hits
         where #{sqa}
         group by http_accept_language
-        order by hits desc
+        #{sqa1}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -113,9 +114,10 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:country => params[:country]) if params[:country]
     conditions2.merge!(:region => params[:region]) if params[:region]
     conditions2.merge!(:city => params[:city]) if params[:city]
-    conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
+    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
 
     paginate_by_sql("
         select
@@ -126,7 +128,7 @@ class Hit < ActiveRecord::Base
         from hits
         where #{sqa}
         group by http_user_agent
-        order by hits desc
+        #{sqa1}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -147,16 +149,17 @@ class Hit < ActiveRecord::Base
     
     conditions2 = {}
     conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time   => params[:end_time])
-    conditions2.merge!(:url       => params[:url]) if params[:url]
-    conditions2.merge!(:country    => params[:country]) if params[:country]
-    conditions2.merge!(:region     => params[:region]) if params[:region]
-    conditions2.merge!(:city       => params[:city]) if params[:city]
+    conditions2.merge!(:end_time => params[:end_time])
+    conditions2.merge!(:url => params[:url]) if params[:url]
+    conditions2.merge!(:country => params[:country]) if params[:country]
+    conditions2.merge!(:region => params[:region]) if params[:region]
+    conditions2.merge!(:city => params[:city]) if params[:city]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    
+    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+
     paginate_by_sql("
         select
           domain,
@@ -166,7 +169,7 @@ class Hit < ActiveRecord::Base
         from hits
         where #{sqa}
         group by domain
-        order by hits desc
+        #{sqa1}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -186,17 +189,18 @@ class Hit < ActiveRecord::Base
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
-    conditions2.merge!(:start_time  => params[:start_time])
-    conditions2.merge!(:end_time    => params[:end_time])
-    conditions2.merge!(:domain      => params[:domain]) if params[:domain]
-    conditions2.merge!(:country     => params[:country]) if params[:country]
-    conditions2.merge!(:region      => params[:region]) if params[:region]
-    conditions2.merge!(:city        => params[:city]) if params[:city]
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time => params[:end_time])
+    conditions2.merge!(:domain => params[:domain]) if params[:domain]
+    conditions2.merge!(:country => params[:country]) if params[:country]
+    conditions2.merge!(:region => params[:region]) if params[:region]
+    conditions2.merge!(:city => params[:city]) if params[:city]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    
+    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+
     paginate_by_sql("
         select
           url,
@@ -206,7 +210,7 @@ class Hit < ActiveRecord::Base
         from hits
         where #{sqa}
         group by url
-        order by hits desc
+        #{sqa1}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -226,14 +230,15 @@ class Hit < ActiveRecord::Base
     
     conditions2 = {}
     conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time   => params[:end_time])
-    conditions2.merge!(:domain     => params[:domain]) if params[:domain]
-    conditions2.merge!(:url       => params[:url]) if params[:url]
+    conditions2.merge!(:end_time => params[:end_time])
+    conditions2.merge!(:domain => params[:domain]) if params[:domain]
+    conditions2.merge!(:url => params[:url]) if params[:url]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
  
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    
+    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+
     paginate_by_sql("
         select
           country,
@@ -243,7 +248,7 @@ class Hit < ActiveRecord::Base
         from hits
         where #{sqa}
         group by country
-        order by hits desc
+        #{sqa1}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -264,15 +269,16 @@ class Hit < ActiveRecord::Base
     
     conditions2 = {}
     conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time   => params[:end_time])
-    conditions2.merge!(:domain     => params[:domain]) if params[:domain]
-    conditions2.merge!(:url       => params[:url]) if params[:url]
-    conditions2.merge!(:country    => params[:country]) if params[:country]
+    conditions2.merge!(:end_time => params[:end_time])
+    conditions2.merge!(:domain => params[:domain]) if params[:domain]
+    conditions2.merge!(:url => params[:url]) if params[:url]
+    conditions2.merge!(:country => params[:country]) if params[:country]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    
+    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+
     paginate_by_sql("
         select
           region,
@@ -282,7 +288,7 @@ class Hit < ActiveRecord::Base
         from hits
         where #{sqa}
         group by region
-        order by hits desc
+        #{sqa1}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -304,16 +310,17 @@ class Hit < ActiveRecord::Base
     
     conditions2 = {}
     conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time   => params[:end_time])
-    conditions2.merge!(:domain     => params[:domain]) if params[:domain]
-    conditions2.merge!(:url       => params[:url]) if params[:url]
-    conditions2.merge!(:country    => params[:country]) if params[:country]
-    conditions2.merge!(:region     => params[:region]) if params[:region]
+    conditions2.merge!(:end_time => params[:end_time])
+    conditions2.merge!(:domain => params[:domain]) if params[:domain]
+    conditions2.merge!(:url => params[:url]) if params[:url]
+    conditions2.merge!(:country => params[:country]) if params[:country]
+    conditions2.merge!(:region => params[:region]) if params[:region]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language   => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    
+    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+
     paginate_by_sql("
         select
           city,
@@ -323,7 +330,7 @@ class Hit < ActiveRecord::Base
         from hits
         where #{sqa}
         group by city
-        order by hits desc
+        #{sqa1}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]

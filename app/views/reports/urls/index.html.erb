@@ -1,10 +1,9 @@
 <table>
   <tr>
-    <th>URL</th>
-    <th>Hits</th>
-    <th>Visits</th>
-    <th>Visitors</th>
-    
+    <th><%= sort_control("URL", "url asc") %></th>
+    <th><%= sort_control("Hits", "hits desc") %></th>
+    <th><%= sort_control("Visits", "visits desc") %></th>
+    <th><%= sort_control("Visitors", "visitors desc") %></th>
   </tr>
   <% @hits.each do |hit| %>
     <tr>

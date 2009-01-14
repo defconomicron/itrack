@@ -8,10 +8,10 @@
     <%= select_tag :time_span, options_for_select(time_spans, params[:time_span]), :onchange => "this.form.submit()" %>
   <% end %>
   
-  <% if (params.keys - %w{start_time end_time period controller action commit labelStep strftime time_span}).length != 0 %>
+  <% if (params.keys - %w{start_time end_time period controller action commit labelStep strftime time_span order}).length != 0 %>
     <ul>
       <% params.keys.each do |key| %>
-        <% next if %w{start_time end_time period controller action commit labelStep strftime time_span}.include?(key) %>
+        <% next if %w{start_time end_time period controller action commit labelStep strftime time_span order}.include?(key) %>
         <li>
           <%= link_to "#{key} = #{params[key]}", params.merge(:controller => params[:controller], :action => params[:action], key => nil) %>
         </li>
