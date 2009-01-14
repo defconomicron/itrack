@@ -26,7 +26,7 @@ class Hit < ActiveRecord::Base
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
-    query("
+    find_by_sql("
       select
         strftime('#{params[:strftime]}', created_at) as created_at,
         sum(hits) as hits,
@@ -76,17 +76,20 @@ class Hit < ActiveRecord::Base
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
-    query("
-      select
-        http_accept_language,
-        count(id) as hits,
-        count(new_visitor) as visitors,
-        count(new_visit) as visits
-      from hits
-      where #{sqa}
-      group by http_accept_language
-      order by hits desc
-    ")
+    paginate_by_sql("
+        select
+          http_accept_language,
+          count(id) as hits,
+          count(new_visitor) as visitors,
+          count(new_visit) as visits
+        from hits
+        where #{sqa}
+        group by http_accept_language
+        order by hits desc
+      ",
+      :page     => params[:page],
+      :per_page => params[:per_page]
+    )
   end
   
   def self.http_user_agents(params)
@@ -114,17 +117,20 @@ class Hit < ActiveRecord::Base
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
 
-    query("
-      select
-        http_user_agent,
-        count(id) as hits,
-        count(new_visitor) as visitors,
-        count(new_visit) as visits
-      from hits
-      where #{sqa}
-      group by http_user_agent
-      order by hits desc
-    ")
+    paginate_by_sql("
+        select
+          http_user_agent,
+          count(id) as hits,
+          count(new_visitor) as visitors,
+          count(new_visit) as visits
+        from hits
+        where #{sqa}
+        group by http_user_agent
+        order by hits desc
+      ",
+      :page     => params[:page],
+      :per_page => params[:per_page]
+    )
   end
   
   def self.domains(params)
@@ -151,17 +157,20 @@ class Hit < ActiveRecord::Base
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
-    query("
-      select
-        domain,
-        count(id) as hits,
-        count(new_visitor) as visitors,
-        count(new_visit) as visits
-      from hits
-      where #{sqa}
-      group by domain
-      order by hits desc
-    ")
+    paginate_by_sql("
+        select
+          domain,
+          count(id) as hits,
+          count(new_visitor) as visitors,
+          count(new_visit) as visits
+        from hits
+        where #{sqa}
+        group by domain
+        order by hits desc
+      ",
+      :page     => params[:page],
+      :per_page => params[:per_page]
+    )
   end
   
   def self.pages(params)
@@ -188,17 +197,20 @@ class Hit < ActiveRecord::Base
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
-    query("
-      select
-        page,
-        count(id) as hits,
-        count(new_visitor) as visitors,
-        count(new_visit) as visits
-      from hits
-      where #{sqa}
-      group by page
-      order by hits desc
-    ")
+    paginate_by_sql("
+        select
+          page,
+          count(id) as hits,
+          count(new_visitor) as visitors,
+          count(new_visit) as visits
+        from hits
+        where #{sqa}
+        group by page
+        order by hits desc
+      ",
+      :page     => params[:page],
+      :per_page => params[:per_page]
+    )
   end
     
   def self.countries(params)
@@ -222,17 +234,20 @@ class Hit < ActiveRecord::Base
  
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
-    query("
-      select
-        country,
-        count(id) as hits,
-        count(new_visitor) as visitors,
-        count(new_visit) as visits
-      from hits
-      where #{sqa}
-      group by country
-      order by hits desc
-    ")
+    paginate_by_sql("
+        select
+          country,
+          count(id) as hits,
+          count(new_visitor) as visitors,
+          count(new_visit) as visits
+        from hits
+        where #{sqa}
+        group by country
+        order by hits desc
+      ",
+      :page     => params[:page],
+      :per_page => params[:per_page]
+    )
   end
 
   def self.regions(params)
@@ -258,17 +273,20 @@ class Hit < ActiveRecord::Base
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
-    query("
-      select
-        region,
-        count(id) as hits,
-        count(new_visitor) as visitors,
-        count(new_visit) as visits
-      from hits
-      where #{sqa}
-      group by region
-      order by hits desc
-    ")
+    paginate_by_sql("
+        select
+          region,
+          count(id) as hits,
+          count(new_visitor) as visitors,
+          count(new_visit) as visits
+        from hits
+        where #{sqa}
+        group by region
+        order by hits desc
+      ",
+      :page     => params[:page],
+      :per_page => params[:per_page]
+    )
   end
 
   def self.cities(params)
@@ -296,17 +314,20 @@ class Hit < ActiveRecord::Base
 
     sqa = sanitize_sql_array([ conditions1, conditions2 ])
     
-    query("
-      select
-        city,
-        count(id) as hits,
-        count(new_visitor) as visitors,
-        count(new_visit) as visits
-      from hits
-      where #{sqa}
-      group by city
-      order by hits desc
-    ")
+    paginate_by_sql("
+        select
+          city,
+          count(id) as hits,
+          count(new_visitor) as visitors,
+          count(new_visit) as visits
+        from hits
+        where #{sqa}
+        group by city
+        order by hits desc
+      ",
+      :page     => params[:page],
+      :per_page => params[:per_page]
+    )
   end
 
   def self.clean

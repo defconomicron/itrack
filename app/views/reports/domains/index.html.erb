@@ -8,10 +8,11 @@
   </tr>
   <% @hits.each do |hit| %>
     <tr>
-      <td><%=link_to hit["domain"] || "", params.merge(:action => :set_domain, :domain => hit["domain"], :page => nil) %></td>
-      <td><%= hit["hits"] %></td>
-      <td><%= hit["visits"] %></td>
-      <td><%= hit["visitors"] %></td>
+      <td><%=link_to hit.domain || "", params.merge(:action => :set_domain, :domain => hit.domain, :page => nil) %></td>
+      <td><%= hit.hits %></td>
+      <td><%= hit.visits %></td>
+      <td><%= hit.visitors %></td>
     </tr>
   <% end %>
 </table>
+<%= will_paginate @hits %>
