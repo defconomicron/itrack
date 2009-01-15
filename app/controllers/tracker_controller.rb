@@ -3,22 +3,22 @@ class TrackerController < ApplicationController
     geo_ip = GeoIp.new(ip_address)
     
     PageView.create(
-                {
-                  :domain               => domain,
-                  :url                  => url,
-                  :ip_address           => ip_address,
-                  :new_visitor          => is_new_visitor?,
-                  :new_visit            => is_new_visit?,
-                  :cookie_id            => cookie_id,
-                  :country              => geo_ip.country,
-                  :region               => geo_ip.region,
-                  :city                 => geo_ip.city,
-                  :longitude            => geo_ip.longitude,
-                  :latitude             => geo_ip.latitude,
-                  :http_user_agent      => http_user_agent,
-                  :http_accept_language => http_accept_language
-                }
-              )
+                      {
+                        :domain               => domain,
+                        :url                  => url,
+                        :ip_address           => ip_address,
+                        :new_visitor          => is_new_visitor?,
+                        :new_visit            => is_new_visit?,
+                        :cookie_id            => cookie_id,
+                        :country              => geo_ip.country,
+                        :region               => geo_ip.region,
+                        :city                 => geo_ip.city,
+                        :longitude            => geo_ip.longitude,
+                        :latitude             => geo_ip.latitude,
+                        :http_user_agent      => http_user_agent,
+                        :http_accept_language => http_accept_language
+                      }
+                    )
     
     new_visitor
     new_visit    
