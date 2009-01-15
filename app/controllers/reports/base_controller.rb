@@ -4,7 +4,7 @@ class Reports::BaseController < ApplicationController
   private
   
     def initialization
-      params[:order] ||= "hits desc"
+      params[:order] ||= "page_views desc"
       params[:time_span] ||= "Last 3 hours"
       eval(params[:time_span].downcase.split(" ").join("_"))
     end
