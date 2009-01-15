@@ -1,6 +1,6 @@
 class Reports::DomainsController < Reports::BaseController  
   def index
-    @hits = Hit.domains(params)
+    @page_views = PageView.domains(params)
   end
   
   def set_domain

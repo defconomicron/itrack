@@ -1,6 +1,6 @@
 class Reports::UrlsController < Reports::BaseController  
   def index
-    @hits = Hit.urls(params)
+    @page_views = PageView.urls(params)
   end
   
   def set_url

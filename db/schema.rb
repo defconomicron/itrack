@@ -11,7 +11,7 @@
 
 ActiveRecord::Schema.define(:version => 20081224025810) do
 
-  create_table "hits", :force => true do |t|
+  create_table "page_views", :force => true do |t|
     t.string   "domain"
     t.string   "url"
     t.string   "ip_address"

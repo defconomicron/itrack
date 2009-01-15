@@ -1,6 +1,6 @@
 class Reports::CountriesController < Reports::BaseController
   def index
-    @hits = Hit.countries(params)
+    @page_views = PageView.countries(params)
   end
     
   def set_country

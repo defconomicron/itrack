@@ -1,17 +1,17 @@
 <table>
   <tr>
     <th><%= sort_control("Country", "country asc") %></th>
-    <th><%= sort_control("Hits", "hits desc") %></th>
+    <th><%= sort_control("Page Views", "page_views desc") %></th>
     <th><%= sort_control("Visits", "visits desc") %></th>
     <th><%= sort_control("Visitors", "visitors desc") %></th>
   </tr>
-  <% @hits.each do |hit| %>
+  <% @page_views.each do |page_view| %>
     <tr>
-      <td><%= link_to hit.country, params.merge(:action => :set_country, :country => hit.country, :region => nil, :city => nil) %></td>
-      <td><%= hit.hits %></td>
-      <td><%= hit.visits %></td>
-      <td><%= hit.visitors %></td>
+      <td><%= link_to page_view.country, params.merge(:action => :set_country, :country => page_view.country, :region => nil, :city => nil) %></td>
+      <td><%= page_view.page_views %></td>
+      <td><%= page_view.visits %></td>
+      <td><%= page_view.visitors %></td>
     </tr>
   <% end %>
 </table>
-<%= will_paginate @hits %>
+<%= will_paginate @page_views %>

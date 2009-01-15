@@ -1,6 +1,6 @@
 class Reports::HttpAcceptLanguagesController < Reports::BaseController
   def index
-    @hits = Hit.http_accept_languages(params)
+    @page_views = PageView.http_accept_languages(params)
   end
   
   def set_http_accept_language

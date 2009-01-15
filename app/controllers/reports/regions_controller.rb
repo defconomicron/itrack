@@ -1,6 +1,6 @@
 class Reports::RegionsController < Reports::BaseController
   def index
-    @hits = Hit.regions(params)
+    @page_views = PageView.regions(params)
   end
     
   def set_region

@@ -1,6 +1,6 @@
-class CreateHits < ActiveRecord::Migration
+class CreatePageViews < ActiveRecord::Migration
   def self.up
-    create_table :hits do |t|
+    create_table :page_views do |t|
       t.string  :domain
       t.string  :url
       t.string  :ip_address
@@ -20,6 +20,6 @@ class CreateHits < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :hits
+    drop_table :page_views
   end
 end

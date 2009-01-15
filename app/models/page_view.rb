@@ -1,4 +1,4 @@
-class Hit < ActiveRecord::Base
+class PageView < ActiveRecord::Base
   def self.traffic(params)  
     conditions1 = []
     conditions1 << "created_at >= :start_time"    
@@ -30,16 +30,16 @@ class Hit < ActiveRecord::Base
     find_by_sql("
       select
         strftime('#{strftime}', created_at) as created_at,
-        sum(hits) as hits,
+        sum(page_views) as page_views,
         sum(visitors) as visitors,
         sum(visits) as visits
       from (
         select
           strftime('#{strftime}', created_at) as created_at,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by strftime('#{strftime}', created_at)
         
@@ -81,10 +81,10 @@ class Hit < ActiveRecord::Base
     paginate_by_sql("
         select
           http_accept_language,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by http_accept_language
         order by #{order}
@@ -123,10 +123,10 @@ class Hit < ActiveRecord::Base
     paginate_by_sql("
         select
           http_user_agent,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by http_user_agent
         order by #{order}
@@ -164,10 +164,10 @@ class Hit < ActiveRecord::Base
     paginate_by_sql("
         select
           domain,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by domain
         order by #{order}
@@ -205,10 +205,10 @@ class Hit < ActiveRecord::Base
     paginate_by_sql("
         select
           url,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by url
         order by #{order}
@@ -243,10 +243,10 @@ class Hit < ActiveRecord::Base
     paginate_by_sql("
         select
           country,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by country
         order by #{order}
@@ -283,10 +283,10 @@ class Hit < ActiveRecord::Base
     paginate_by_sql("
         select
           region,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by region
         order by #{order}
@@ -325,10 +325,10 @@ class Hit < ActiveRecord::Base
     paginate_by_sql("
         select
           city,
-          count(id) as hits,
+          count(id) as page_views,
           count(new_visitor) as visitors,
           count(new_visit) as visits
-        from hits
+        from page_views
         where #{where}
         group by city
         order by #{order}
@@ -339,7 +339,7 @@ class Hit < ActiveRecord::Base
   end
 
   def self.clean
-    query("delete from hits where created_at < '#{1.week.ago.strftime("%Y-%m-%d %H:%M:%S")}'")
+    query("delete from page_views where created_at < '#{1.week.ago.strftime("%Y-%m-%d %H:%M:%S")}'")
   end
     
   private
@@ -352,8 +352,8 @@ class Hit < ActiveRecord::Base
       strftime = sanitize_sql_array(["%s", params[:strftime]])
       a = params[:start_time]
       b = params[:end_time]
-      hits = []
-      hits << "select '#{a.strftime(strftime)}' as created_at, 0 as hits, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
-      return hits * " union "
+      page_views = []
+      page_views << "select '#{a.strftime(strftime)}' as created_at, 0 as page_views, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
+      return page_views * " union "
     end
 end

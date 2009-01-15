@@ -1,6 +1,6 @@
 class Reports::HttpUserAgentsController < Reports::BaseController
   def index
-    @hits = Hit.http_user_agents(params)
+    @page_views = PageView.http_user_agents(params)
   end
   
   def set_http_user_agent

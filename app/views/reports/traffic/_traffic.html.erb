@@ -3,23 +3,23 @@
     
     <% n = 0 %>
     <% prev = nil %>
-    <% @hits.each do |h| %>
-      <category label='<%= format_graph_datetime(h.created_at, prev) %>' />
-      <% prev = h.created_at if n%params[:labelStep] == 0 %>
+    <% @page_views.each do |page_view| %>
+      <category label='<%= format_graph_datetime(page_view.created_at, prev) %>' />
+      <% prev = page_view.created_at if n%params[:labelStep] == 0 %>
       <% n += 1 %>
     <% end %>
     
   </categories>
 
-  <dataset seriesName='Hits' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FF0000'>
-    <% @hits.each do |h| %><set value='<%= h.hits %>' /><% end %>
+  <dataset seriesName='Page Views' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FF0000'>
+    <% @page_views.each do |page_view| %><set value='<%= page_view.page_views %>' /><% end %>
   </dataset>
 
   <dataset seriesName='Visits' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='00AA00'>
-    <% @hits.each do |h| %><set value='<%= h.visits %>' /><% end %>
+    <% @page_views.each do |page_view| %><set value='<%= page_view.visits %>' /><% end %>
   </dataset>
 
   <dataset seriesName='Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FF9900'>
-    <% @hits.each do |h| %><set value='<%= h.visitors %>' /><% end %>
+    <% @page_views.each do |page_view| %><set value='<%= page_view.visitors %>' /><% end %>
   </dataset>
 </chart>

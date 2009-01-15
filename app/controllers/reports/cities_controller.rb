@@ -1,6 +1,6 @@
 class Reports::CitiesController < Reports::BaseController
   def index
-    @hits = Hit.cities(params)
+    @page_views = PageView.cities(params)
   end
     
   def set_city

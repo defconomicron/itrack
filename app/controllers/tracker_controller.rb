@@ -2,7 +2,7 @@ class TrackerController < ApplicationController
   def index
     geo_ip = GeoIp.new(ip_address)
     
-    Hit.create(
+    PageView.create(
                 {
                   :domain               => domain,
                   :url                  => url,
