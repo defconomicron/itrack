@@ -31,13 +31,17 @@ class PageView < ActiveRecord::Base
       select
         strftime('#{strftime}', created_at) as created_at,
         sum(page_views) as page_views,
+        sum(new_visitors) as new_visitors,
+        sum(return_visitors) as return_visitors,
         sum(visitors) as visitors,
         sum(visits) as visits
       from (
         select
           strftime('#{strftime}', created_at) as created_at,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -82,7 +86,9 @@ class PageView < ActiveRecord::Base
         select
           http_accept_language,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -124,7 +130,9 @@ class PageView < ActiveRecord::Base
         select
           http_user_agent,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -165,7 +173,9 @@ class PageView < ActiveRecord::Base
         select
           domain,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -206,7 +216,9 @@ class PageView < ActiveRecord::Base
         select
           url,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -244,7 +256,9 @@ class PageView < ActiveRecord::Base
         select
           country,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -284,7 +298,9 @@ class PageView < ActiveRecord::Base
         select
           region,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -326,7 +342,9 @@ class PageView < ActiveRecord::Base
         select
           city,
           count(id) as page_views,
-          count(new_visitor) as visitors,
+          count(new_visitor) as new_visitors,
+          count(return_visitor) as return_visitors,
+          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -347,13 +365,13 @@ class PageView < ActiveRecord::Base
     def self.query(str)
       connection.select_all(str)
     end
-      
+              
     def self.zero_buffer(params)
       strftime = sanitize_sql_array(["%s", params[:strftime]])
       a = params[:start_time]
       b = params[:end_time]
       page_views = []
-      page_views << "select '#{a.strftime(strftime)}' as created_at, 0 as page_views, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
+      page_views << "select '#{a.strftime(strftime)}' as created_at, 0 as page_views, 0 as new_visitors, 0 as return_visitors, 0 as visitors, 0 as visits" while (a += eval("1.#{params[:period]}")) < b
       return page_views * " union "
     end
 end

@@ -12,6 +12,7 @@ class CreatePageViews < ActiveRecord::Migration
       t.string  :latitude
       t.boolean :new_visitor
       t.boolean :new_visit
+      t.boolean :return_visitor
       t.string  :http_user_agent
       t.string  :http_accept_language
 

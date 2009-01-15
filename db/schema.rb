@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20081224025810) do
     t.string   "latitude"
     t.boolean  "new_visitor"
     t.boolean  "new_visit"
+    t.boolean  "return_visitor"
     t.string   "http_user_agent"
     t.string   "http_accept_language"
     t.datetime "created_at"

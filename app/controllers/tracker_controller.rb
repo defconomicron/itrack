@@ -9,6 +9,7 @@ class TrackerController < ApplicationController
                         :ip_address           => ip_address,
                         :new_visitor          => is_new_visitor?,
                         :new_visit            => is_new_visit?,
+                        :return_visitor       => is_return_visitor?,
                         :cookie_id            => cookie_id,
                         :country              => geo_ip.country,
                         :region               => geo_ip.region,
@@ -18,7 +19,7 @@ class TrackerController < ApplicationController
                         :http_user_agent      => http_user_agent,
                         :http_accept_language => http_accept_language
                       }
-                    )
+                   )
     
     new_visitor
     new_visit    
@@ -46,9 +47,13 @@ class TrackerController < ApplicationController
     def is_new_visitor?
       return true if cookies[unique("visitor")].blank?
     end
-    
+        
     def is_new_visit?
       return true if cookies[unique("visit")].blank?
+    end
+    
+    def is_return_visitor?
+      return true if !is_new_visitor? && is_new_visit?
     end
     
     def new_visitor

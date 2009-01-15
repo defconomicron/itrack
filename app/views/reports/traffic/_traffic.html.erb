@@ -11,15 +11,24 @@
     
   </categories>
 
-  <dataset seriesName='Page Views' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FF0000'>
+  <dataset seriesName='Page Views' anchorBgColor='0000FF' anchorBorderColor='0000FF'>
     <% @page_views.each do |page_view| %><set value='<%= page_view.page_views %>' /><% end %>
   </dataset>
 
-  <dataset seriesName='Visits' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='00AA00'>
-    <% @page_views.each do |page_view| %><set value='<%= page_view.visits %>' /><% end %>
+  <dataset seriesName='New Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF'>
+    <% @page_views.each do |page_view| %><set value='<%= page_view.new_visitors %>' /><% end %>
   </dataset>
-
-  <dataset seriesName='Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF' color='FF9900'>
+  
+  <dataset seriesName='Return Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF'>
+    <% @page_views.each do |page_view| %><set value='<%= page_view.return_visitors %>' /><% end %>
+  </dataset>
+  
+    <dataset seriesName='Visitors' anchorBgColor='0000FF' anchorBorderColor='0000FF'>
     <% @page_views.each do |page_view| %><set value='<%= page_view.visitors %>' /><% end %>
   </dataset>
+  
+  <dataset seriesName='Visits' anchorBgColor='0000FF' anchorBorderColor='0000FF'>
+    <% @page_views.each do |page_view| %><set value='<%= page_view.visits %>' /><% end %>
+  </dataset>
+  
 </chart>
