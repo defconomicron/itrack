@@ -24,30 +24,31 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    strftime = sanitize_sql_array(["%s", params[:strftime]])
     
     find_by_sql("
       select
-        strftime('#{params[:strftime]}', created_at) as created_at,
+        strftime('#{strftime}', created_at) as created_at,
         sum(hits) as hits,
         sum(visitors) as visitors,
         sum(visits) as visits
       from (
         select
-          strftime('#{params[:strftime]}', created_at) as created_at,
+          strftime('#{strftime}', created_at) as created_at,
           count(id) as hits,
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
-        group by strftime('#{params[:strftime]}', created_at)
+        where #{where}
+        group by strftime('#{strftime}', created_at)
         
         union
         
         #{zero_buffer(params)}
       )
-      group by strftime('#{params[:strftime]}', created_at)
-      order by strftime('#{params[:strftime]}', created_at)
+      group by strftime('#{strftime}', created_at)
+      order by strftime('#{strftime}', created_at)
     ")
   end
   
@@ -74,8 +75,8 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:city => params[:city]) if params[:city]
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
 
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    order = sanitize_sql_array(["%s", params[:order]])
     
     paginate_by_sql("
         select
@@ -84,9 +85,9 @@ class Hit < ActiveRecord::Base
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
+        where #{where}
         group by http_accept_language
-        #{sqa1}
+        order by #{order}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -116,8 +117,8 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:city => params[:city]) if params[:city]
     conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    order = sanitize_sql_array(["%s", params[:order]])
 
     paginate_by_sql("
         select
@@ -126,9 +127,9 @@ class Hit < ActiveRecord::Base
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
+        where #{where}
         group by http_user_agent
-        #{sqa1}
+        order by #{order}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -157,8 +158,8 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    order = sanitize_sql_array(["%s", params[:order]])
 
     paginate_by_sql("
         select
@@ -167,9 +168,9 @@ class Hit < ActiveRecord::Base
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
+        where #{where}
         group by domain
-        #{sqa1}
+        order by #{order}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -198,8 +199,8 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    order = sanitize_sql_array(["%s", params[:order]])
 
     paginate_by_sql("
         select
@@ -208,9 +209,9 @@ class Hit < ActiveRecord::Base
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
+        where #{where}
         group by url
-        #{sqa1}
+        order by #{order}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -236,8 +237,8 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
  
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    order = sanitize_sql_array(["%s", params[:order]])
 
     paginate_by_sql("
         select
@@ -246,9 +247,9 @@ class Hit < ActiveRecord::Base
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
+        where #{where}
         group by country
-        #{sqa1}
+        order by #{order}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -276,8 +277,8 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    order = sanitize_sql_array(["%s", params[:order]])
 
     paginate_by_sql("
         select
@@ -286,9 +287,9 @@ class Hit < ActiveRecord::Base
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
+        where #{where}
         group by region
-        #{sqa1}
+        order by #{order}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -318,8 +319,8 @@ class Hit < ActiveRecord::Base
     conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
     conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
 
-    sqa = sanitize_sql_array([ conditions1, conditions2 ])
-    sqa1 = sanitize_sql_array(["order by %s", params[:order]])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+    order = sanitize_sql_array(["%s", params[:order]])
 
     paginate_by_sql("
         select
@@ -328,9 +329,9 @@ class Hit < ActiveRecord::Base
           count(new_visitor) as visitors,
           count(new_visit) as visits
         from hits
-        where #{sqa}
+        where #{where}
         group by city
-        #{sqa1}
+        order by #{order}
       ",
       :page     => params[:page],
       :per_page => params[:per_page]
@@ -348,10 +349,11 @@ class Hit < ActiveRecord::Base
     end
       
     def self.zero_buffer(params)
+      strftime = sanitize_sql_array(["%s", params[:strftime]])
       a = params[:start_time]
       b = params[:end_time]
       hits = []
-      hits << "select '#{a.strftime(params[:strftime])}' as created_at, 0 as hits, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
+      hits << "select '#{a.strftime(strftime)}' as created_at, 0 as hits, 0 as visits, 0 as visitors" while (a += eval("1.#{params[:period]}")) < b
       return hits * " union "
     end
 end
