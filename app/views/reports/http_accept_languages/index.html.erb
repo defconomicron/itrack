@@ -14,7 +14,7 @@
   <% total_unique_visitors = 0 %>
   <% @page_views.each do |page_view| %>
     <tr>
-      <td><%= link_to page_view.http_accept_language || "", params.merge(:action => :set_http_accept_language, :http_accept_language => page_view.http_accept_language) %></td>
+      <td><%= link_to page_view.http_accept_language || "", params.merge(:controller => :traffic, :http_accept_language => page_view.http_accept_language) %></td>
       <td><%= page_view.page_views %></td>
       <td><%= page_view.new_visitors %></td>
       <td><%= page_view.return_visitors %></td>

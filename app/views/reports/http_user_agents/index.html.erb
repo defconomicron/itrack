@@ -14,7 +14,7 @@
   <% total_unique_visitors = 0 %>
   <% @page_views.each do |page_view| %>
     <tr>
-      <td><%= link_to page_view.http_user_agent || "", params.merge(:action => :set_http_user_agent, :http_user_agent => page_view.http_user_agent) %></td>
+      <td><%= link_to page_view.http_user_agent || "", params.merge(:controller => :traffic, :http_user_agent => page_view.http_user_agent) %></td>
       <td><%= page_view.page_views %></td>
       <td><%= page_view.new_visitors %></td>
       <td><%= page_view.return_visitors %></td>
