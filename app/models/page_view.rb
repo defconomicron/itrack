@@ -33,7 +33,6 @@ class PageView < ActiveRecord::Base
         sum(page_views) as page_views,
         sum(new_visitors) as new_visitors,
         sum(return_visitors) as return_visitors,
-        sum(visitors) as visitors,
         sum(visits) as visits
       from (
         select
@@ -41,7 +40,6 @@ class PageView < ActiveRecord::Base
           count(id) as page_views,
           count(new_visitor) as new_visitors,
           count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
           count(new_visit) as visits
         from page_views
         where #{where}
@@ -81,17 +79,42 @@ class PageView < ActiveRecord::Base
 
     where = sanitize_sql_array([ conditions1, conditions2 ])
     order = sanitize_sql_array(["%s", params[:order]])
-    
+
     paginate_by_sql("
         select
           http_accept_language,
-          count(id) as page_views,
-          count(new_visitor) as new_visitors,
-          count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
-          count(new_visit) as visits
-        from page_views
-        where #{where}
+          sum(page_views) as page_views,
+          sum(new_visitors) as new_visitors,
+          sum(return_visitors) as return_visitors,
+          sum(visits) as visits,
+          sum(unique_visitors) as unique_visitors
+        from (
+        
+            select
+              http_accept_language,
+              count(id) as page_views,
+              count(new_visitor) as new_visitors,
+              count(return_visitor) as return_visitors,
+              count(new_visit) as visits,
+              0 as unique_visitors
+            from page_views
+            where #{where}
+            group by http_accept_language
+            
+            union
+
+            select http_accept_language, 0 as page_views, 0 as new_visitors, 0 as return_vistors, 0 as visits, sum(unique_visitor) as unique_visitors
+            from (
+              select
+                http_accept_language,
+                1 as unique_visitor
+              from page_views
+              where #{where}
+              group by http_accept_language, cookie_id
+            ) as a
+            group by http_accept_language
+    
+        ) as a
         group by http_accept_language
         order by #{order}
       ",
@@ -129,13 +152,38 @@ class PageView < ActiveRecord::Base
     paginate_by_sql("
         select
           http_user_agent,
-          count(id) as page_views,
-          count(new_visitor) as new_visitors,
-          count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
-          count(new_visit) as visits
-        from page_views
-        where #{where}
+          sum(page_views) as page_views,
+          sum(new_visitors) as new_visitors,
+          sum(return_visitors) as return_visitors,
+          sum(visits) as visits,
+          sum(unique_visitors) as unique_visitors
+        from (
+        
+            select
+              http_user_agent,
+              count(id) as page_views,
+              count(new_visitor) as new_visitors,
+              count(return_visitor) as return_visitors,
+              count(new_visit) as visits,
+              0 as unique_visitors
+            from page_views
+            where #{where}
+            group by http_user_agent
+            
+            union
+
+            select http_user_agent, 0 as page_views, 0 as new_visitors, 0 as return_vistors, 0 as visits, sum(unique_visitor) as unique_visitors
+            from (
+              select
+                http_user_agent,
+                1 as unique_visitor
+              from page_views
+              where #{where}
+              group by http_user_agent, cookie_id
+            ) as a
+            group by http_user_agent
+    
+        ) as a
         group by http_user_agent
         order by #{order}
       ",
@@ -172,13 +220,38 @@ class PageView < ActiveRecord::Base
     paginate_by_sql("
         select
           domain,
-          count(id) as page_views,
-          count(new_visitor) as new_visitors,
-          count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
-          count(new_visit) as visits
-        from page_views
-        where #{where}
+          sum(page_views) as page_views,
+          sum(new_visitors) as new_visitors,
+          sum(return_visitors) as return_visitors,
+          sum(visits) as visits,
+          sum(unique_visitors) as unique_visitors
+        from (
+        
+            select
+              domain,
+              count(id) as page_views,
+              count(new_visitor) as new_visitors,
+              count(return_visitor) as return_visitors,
+              count(new_visit) as visits,
+              0 as unique_visitors
+            from page_views
+            where #{where}
+            group by domain
+            
+            union
+
+            select domain, 0 as page_views, 0 as new_visitors, 0 as return_vistors, 0 as visits, sum(unique_visitor) as unique_visitors
+            from (
+              select
+                domain,
+                1 as unique_visitor
+              from page_views
+              where #{where}
+              group by domain, cookie_id
+            ) as a
+            group by domain
+    
+        ) as a
         group by domain
         order by #{order}
       ",
@@ -215,13 +288,38 @@ class PageView < ActiveRecord::Base
     paginate_by_sql("
         select
           url,
-          count(id) as page_views,
-          count(new_visitor) as new_visitors,
-          count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
-          count(new_visit) as visits
-        from page_views
-        where #{where}
+          sum(page_views) as page_views,
+          sum(new_visitors) as new_visitors,
+          sum(return_visitors) as return_visitors,
+          sum(visits) as visits,
+          sum(unique_visitors) as unique_visitors
+        from (
+        
+            select
+              url,
+              count(id) as page_views,
+              count(new_visitor) as new_visitors,
+              count(return_visitor) as return_visitors,
+              count(new_visit) as visits,
+              0 as unique_visitors
+            from page_views
+            where #{where}
+            group by url
+            
+            union
+
+            select url, 0 as page_views, 0 as new_visitors, 0 as return_vistors, 0 as visits, sum(unique_visitor) as unique_visitors
+            from (
+              select
+                url,
+                1 as unique_visitor
+              from page_views
+              where #{where}
+              group by url, cookie_id
+            ) as a
+            group by url
+    
+        ) as a
         group by url
         order by #{order}
       ",
@@ -255,13 +353,38 @@ class PageView < ActiveRecord::Base
     paginate_by_sql("
         select
           country,
-          count(id) as page_views,
-          count(new_visitor) as new_visitors,
-          count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
-          count(new_visit) as visits
-        from page_views
-        where #{where}
+          sum(page_views) as page_views,
+          sum(new_visitors) as new_visitors,
+          sum(return_visitors) as return_visitors,
+          sum(visits) as visits,
+          sum(unique_visitors) as unique_visitors
+        from (
+        
+            select
+              country,
+              count(id) as page_views,
+              count(new_visitor) as new_visitors,
+              count(return_visitor) as return_visitors,
+              count(new_visit) as visits,
+              0 as unique_visitors
+            from page_views
+            where #{where}
+            group by country
+            
+            union
+
+            select country, 0 as page_views, 0 as new_visitors, 0 as return_vistors, 0 as visits, sum(unique_visitor) as unique_visitors
+            from (
+              select
+                country,
+                1 as unique_visitor
+              from page_views
+              where #{where}
+              group by country, cookie_id
+            ) as a
+            group by country
+    
+        ) as a
         group by country
         order by #{order}
       ",
@@ -296,15 +419,43 @@ class PageView < ActiveRecord::Base
 
     paginate_by_sql("
         select
+          country,
           region,
-          count(id) as page_views,
-          count(new_visitor) as new_visitors,
-          count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
-          count(new_visit) as visits
-        from page_views
-        where #{where}
-        group by region
+          sum(page_views) as page_views,
+          sum(new_visitors) as new_visitors,
+          sum(return_visitors) as return_visitors,
+          sum(visits) as visits,
+          sum(unique_visitors) as unique_visitors
+        from (
+        
+            select
+              country,
+              region,
+              count(id) as page_views,
+              count(new_visitor) as new_visitors,
+              count(return_visitor) as return_visitors,
+              count(new_visit) as visits,
+              0 as unique_visitors
+            from page_views
+            where #{where}
+            group by country, region
+            
+            union
+
+            select country, region, 0 as page_views, 0 as new_visitors, 0 as return_vistors, 0 as visits, sum(unique_visitor) as unique_visitors
+            from (
+              select
+                country,
+                region,
+                1 as unique_visitor
+              from page_views
+              where #{where}
+              group by country, region, cookie_id
+            ) as a
+            group by country, region
+    
+        ) as a
+        group by country, region
         order by #{order}
       ",
       :page     => params[:page],
@@ -340,15 +491,46 @@ class PageView < ActiveRecord::Base
 
     paginate_by_sql("
         select
+          country,
+          region,
           city,
-          count(id) as page_views,
-          count(new_visitor) as new_visitors,
-          count(return_visitor) as return_visitors,
-          count(new_visitor) + count(return_visitor) as visitors,
-          count(new_visit) as visits
-        from page_views
-        where #{where}
-        group by city
+          sum(page_views) as page_views,
+          sum(new_visitors) as new_visitors,
+          sum(return_visitors) as return_visitors,
+          sum(visits) as visits,
+          sum(unique_visitors) as unique_visitors
+        from (
+        
+            select
+              country,
+              region,
+              city,
+              count(id) as page_views,
+              count(new_visitor) as new_visitors,
+              count(return_visitor) as return_visitors,
+              count(new_visit) as visits,
+              0 as unique_visitors
+            from page_views
+            where #{where}
+            group by country, region, city
+            
+            union
+
+            select country, region, city, 0 as page_views, 0 as new_visitors, 0 as return_vistors, 0 as visits, sum(unique_visitor) as unique_visitors
+            from (
+              select
+                country,
+                region,
+                city,
+                1 as unique_visitor
+              from page_views
+              where #{where}
+              group by country, region, city, cookie_id
+            ) as a
+            group by country, region, city
+    
+        ) as a
+        group by country, region, city
         order by #{order}
       ",
       :page     => params[:page],
@@ -371,7 +553,7 @@ class PageView < ActiveRecord::Base
       a = params[:start_time]
       b = params[:end_time]
       page_views = []
-      page_views << "select '#{a.strftime(strftime)}' as created_at, 0 as page_views, 0 as new_visitors, 0 as return_visitors, 0 as visitors, 0 as visits" while (a += eval("1.#{params[:period]}")) < b
+      page_views << "select '#{a.strftime(strftime)}' as created_at, 0 as page_views, 0 as new_visitors, 0 as return_visitors, 0 as visits" while (a += eval("1.#{params[:period]}")) < b
       return page_views * " union "
     end
 end

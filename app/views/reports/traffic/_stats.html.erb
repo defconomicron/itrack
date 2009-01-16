@@ -4,7 +4,6 @@
     <th>Page Views</th>
     <th>New Visitors</th>
     <th>Return Visitors</th>
-    <th>Visitors</th>
     <th>Visits</th>
   </tr>
   <tr>
@@ -12,7 +11,6 @@
     <td><%= @total_page_views %></td>
     <td><%= @total_new_visitors %></td>
     <td><%= @total_return_visitors %></td>
-    <td><%= @total_visitors %></td>
     <td><%= @total_visits %></td>
   </tr>
   <tr>
@@ -20,23 +18,20 @@
     <td><%= number_with_delimiter((((@total_page_views.to_f/@page_views.length.to_f)/60)/60).round(2)) %></td>
     <td><%= number_with_delimiter((((@total_new_visitors.to_f/@page_views.length.to_f)/60)/60).round(2)) %></td>
     <td><%= number_with_delimiter((((@total_return_visitors.to_f/@page_views.length.to_f)/60)/60).round(2)) %></td>
-    <td><%= number_with_delimiter((((@total_visitors.to_f/@page_views.length.to_f)/60)/60).round(2)) %></td>
     <td><%= number_with_delimiter((((@total_visits.to_f/@page_views.length.to_f)/60)/60).round(2)) %></td>
   </tr>
   <tr>
     <td>p/m</td>
     <td><%= number_with_delimiter(((@total_page_views.to_f/@page_views.length.to_f)/60).round(2)) %></td>
     <td><%= number_with_delimiter(((@total_new_visitors.to_f/@page_views.length.to_f)/60).round(2)) %></td>
-    <td><%= number_with_delimiter(((@total_return_visitors.to_f/@page_views.length.to_f)/60).round(2)) %></td>    
-    <td><%= number_with_delimiter(((@total_visitors.to_f/@page_views.length.to_f)/60).round(2)) %></td>
+    <td><%= number_with_delimiter(((@total_return_visitors.to_f/@page_views.length.to_f)/60).round(2)) %></td>
     <td><%= number_with_delimiter(((@total_visits.to_f/@page_views.length.to_f)/60).round(2)) %></td>
   </tr>
   <tr>
     <td>p/h</td>
     <td><%= number_with_delimiter((@total_page_views.to_f/@page_views.length.to_f).round(2)) %></td>
     <td><%= number_with_delimiter((@total_new_visitors.to_f/@page_views.length.to_f).round(2)) %></td>
-    <td><%= number_with_delimiter((@total_return_visitors.to_f/@page_views.length.to_f).round(2)) %></td>    
-    <td><%= number_with_delimiter((@total_visitors.to_f/@page_views.length.to_f).round(2)) %></td>
+    <td><%= number_with_delimiter((@total_return_visitors.to_f/@page_views.length.to_f).round(2)) %></td>
     <td><%= number_with_delimiter((@total_visits.to_f/@page_views.length.to_f).round(2)) %></td>
   </tr>
 </table>

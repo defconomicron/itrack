@@ -1,39 +1,45 @@
 <table>
   <tr>
+    <th><%= sort_control("Country", "country asc") %></th>
+    <th><%= sort_control("Region", "region asc") %></th>
     <th><%= sort_control("City", "city asc") %></th>
     <th><%= sort_control("Page Views", "page_views desc") %></th>
     <th><%= sort_control("New Visitors", "new_visitors desc") %></th>
     <th><%= sort_control("Return Visitors", "return_visitors desc") %></th>
-    <th><%= sort_control("Visitors", "visitors desc") %></th>
     <th><%= sort_control("Visits", "visits desc") %></th>
+    <th><%= sort_control("Unique Visitors", "unique_visitors desc") %></th>
   </tr>
   <% total_page_views = 0 %>
   <% total_new_visitors = 0 %>
   <% total_return_visitors = 0 %>
-  <% total_visitors = 0 %>
   <% total_visits = 0 %>
+  <% total_unique_visitors = 0 %>
   <% @page_views.each do |page_view| %>
     <tr>
-      <td><%= link_to page_view.city, params.merge(:action => :set_city, :city => page_view.city) %></td>
+      <td><%= link_to page_view.country, params.merge(:controller => :regions, :country => page_view.country, :region => nil, :city => nil) %></td>
+      <td><%= link_to page_view.region, params.merge(:controller => :cities, :country => page_view.country, :region => page_view.region, :city => nil) %></td>
+      <td><%= link_to page_view.city, params.merge(:controller => :traffic, :country => page_view.country, :region => page_view.region, :city => page_view.city) %></td>
       <td><%= page_view.page_views %></td>
       <td><%= page_view.new_visitors %></td>
-      <td><%= page_view.return_visitors %></td>            
-      <td><%= page_view.visitors %></td>
+      <td><%= page_view.return_visitors %></td>
       <td><%= page_view.visits %></td>
+      <td><%= page_view.unique_visitors %></td>
       <% total_page_views += page_view.page_views.to_i %>
       <% total_new_visitors += page_view.new_visitors.to_i %>
       <% total_return_visitors += page_view.return_visitors.to_i %>
-      <% total_visitors += page_view.visitors.to_i %>
       <% total_visits += page_view.visits.to_i %>
+      <% total_unique_visitors += page_view.unique_visitors.to_i %>
     </tr>
   <% end %>
   <tr>
     <td><b>Total:</b></td>
+    <td></td>
+    <td></td>
     <td><%= total_page_views %></td>
     <td><%= total_new_visitors %></td>
     <td><%= total_return_visitors %></td>
-    <td><%= total_visitors %></td>
-    <td><%= total_visits %></td>    
+    <td><%= total_visits %></td>
+    <td><%= total_unique_visitors %></td>
   </tr>
 </table>
 <%= will_paginate @page_views %>
