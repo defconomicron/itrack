@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def get_controller
-    params[:controller].split("/")[1]
+    url_for(:controller => params[:controller]) 
   end
   
   def time_spans

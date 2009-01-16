@@ -1,6 +1,11 @@
 class Reports::BaseController < ApplicationController
   before_filter :initialization, :only => %w{index}
-    
+  
+  def search
+    params[:action] = "index"
+    redirect_to(params)
+  end
+  
   private
   
     def initialization

@@ -1,12 +1,16 @@
 <p>
   <div style="float:right">
-    <% form_tag(get_controller) do %>
+    <% a = params.merge(:action => "search") %>
+    <% a.delete(:time_span) %>
+    <% form_tag(a) do %>
       <%= select_tag :time_span, options_for_select(time_spans, params[:time_span]), :onchange => "this.form.submit()" %>
     <% end %>
   </div>
-  
+    
   <div style="float:right">
-    <% form_tag(get_controller) do %>
+    <% b = params.merge(:action => "search") %>
+    <% b.delete(:domain) %>
+    <% form_tag(b) do %>
       <%= select_tag :domain, options_for_select(@domain_list, params[:domain]), :onchange => "this.form.submit()" %>
     <% end %>
   </div>  

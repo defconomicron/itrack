@@ -1,4 +1,4 @@
-module TrafficHelper
+module TrafficHelper  
   def boolToNum(bVal)
     bVal ? 1 : 0
   end
