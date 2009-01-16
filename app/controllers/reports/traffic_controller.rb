@@ -12,9 +12,4 @@ class Reports::TrafficController < Reports::BaseController
       @total_visits += h.visits.to_i
     end
   end
-  
-  def search
-    params[:action] = "index"
-    redirect_to(params)
-  end
 end

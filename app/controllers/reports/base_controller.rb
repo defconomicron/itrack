@@ -1,9 +1,11 @@
 class Reports::BaseController < ApplicationController
   before_filter :initialization, :only => %w{index}
-  
+    
   private
   
     def initialization
+      @domain_list = PageView.domain_list
+      params.delete(:domain) if params[:domain].blank?
       params[:order] ||= "page_views desc"
       params[:time_span] ||= "Last 3 hours"
       eval(params[:time_span].downcase.split(" ").join("_"))

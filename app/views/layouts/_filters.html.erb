@@ -1,14 +1,23 @@
 <p>
-  <b>Filters:</b>
+  <div style="float:right">
+    <% form_tag(get_controller) do %>
+      <%= select_tag :time_span, options_for_select(time_spans, params[:time_span]), :onchange => "this.form.submit()" %>
+    <% end %>
+  </div>
+  
+  <div style="float:right">
+    <% form_tag(get_controller) do %>
+      <%= select_tag :domain, options_for_select(@domain_list, params[:domain]), :onchange => "this.form.submit()" %>
+    <% end %>
+  </div>  
+  
   <center>
     <%= [format_datetime(params[:start_time]), format_datetime(params[:end_time])] * " - " %>
   </center>
-
-  <% form_tag("/reports/traffic/search") do %>
-    <%= select_tag :time_span, options_for_select(time_spans, params[:time_span]), :onchange => "this.form.submit()" %>
-  <% end %>
-  
+        
   <% if (params.keys - %w{start_time end_time period controller action commit labelStep strftime time_span order}).length != 0 %>
+    <b>Filters:</b>
+  
     <ul>
       <% params.keys.each do |key| %>
         <% next if %w{start_time end_time period controller action commit labelStep strftime time_span order}.include?(key) %>

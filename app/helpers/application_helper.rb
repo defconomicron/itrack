@@ -1,5 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def get_controller
+    params[:controller].split("/")[1]
+  end
+  
   def time_spans
     [
       "Last 1 hour",

@@ -541,7 +541,16 @@ class PageView < ActiveRecord::Base
   def self.clean
     query("delete from page_views where created_at < '#{1.week.ago.strftime("%Y-%m-%d %H:%M:%S")}'")
   end
-    
+  
+  def self.domain_list
+    [''] + find_by_sql("
+      select domain
+      from page_views
+      group by domain
+      order by domain
+    ").map {|r| r.domain}
+  end
+  
   private
   
     def self.query(str)
