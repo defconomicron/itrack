@@ -4,6 +4,13 @@ class Reports::BaseController < ApplicationController
   private
   
     def initialization
+    
+      if session[:controller] != params[:controller]
+        params[:page] = 1
+        params[:order] = "page_views desc"
+        session[:controller] = params[:controller]
+      end
+    
       @domain_list = PageView.domain_list
       params.delete(:domain) if params[:domain].blank?
       params[:order] ||= "page_views desc"
