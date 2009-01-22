@@ -30,7 +30,7 @@ class TrackerController < ApplicationController
   private
   
     def domain
-      referer.split("/")[2].split(".")[-2..-1].join(".") if referer
+      referer.split("/")[2].split(".")[-2..-1].join(".") if referer      
     end
     
     def url
