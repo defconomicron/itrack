@@ -543,16 +543,20 @@ class PageView < ActiveRecord::Base
   end
   
   def self.domain_list(params)
-    start_time = sanitize_sql_array(["%s", params[:start_time]])
-    end_time = sanitize_sql_array(["%s", params[:end_time]])
+    conditions1 = []
+    conditions1 << "created_at >= :start_time"    
+    conditions1 << "created_at <= :end_time"
+    conditions1 = conditions1.join(" and ")
+    
+    conditions2 = {}
+    conditions2.merge!(:start_time => params[:start_time])
+    conditions2.merge!(:end_time => params[:end_time])
+    where = sanitize_sql_array([ conditions1, conditions2 ])
+
     [''] + find_by_sql("
-      select
-        domain
+      select domain
       from page_views
-      where
-        created_at >= '#{start_time}'
-        and
-        created_at <= '#{end_time}'
+      where #{where}
       group by domain
       order by domain
     ").map {|r| r.domain}
