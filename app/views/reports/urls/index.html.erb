@@ -15,11 +15,11 @@
   <% @page_views.each do |page_view| %>
     <tr>
       <td><%=link_to page_view.url || "", params.merge(:controller => :traffic, :url => page_view.url) %></td>
-      <td><%= page_view.page_views %></td>
-      <td><%= page_view.new_visitors %></td>
-      <td><%= page_view.return_visitors %></td>
-      <td><%= page_view.visits %></td>
-      <td><%= page_view.unique_visitors %></td>
+      <td><%= number_with_delimiter(page_view.page_views) %></td>
+      <td><%= number_with_delimiter(page_view.new_visitors) %></td>
+      <td><%= number_with_delimiter(page_view.return_visitors) %></td>
+      <td><%= number_with_delimiter(page_view.visits) %></td>
+      <td><%= number_with_delimiter(page_view.unique_visitors) %></td>
       <% total_page_views += page_view.page_views.to_i %>
       <% total_new_visitors += page_view.new_visitors.to_i %>
       <% total_return_visitors += page_view.return_visitors.to_i %>
@@ -29,11 +29,11 @@
   <% end %>
   <tr>
     <td><b>Total:</b></td>
-    <td><%= total_page_views %></td>
-    <td><%= total_new_visitors %></td>
-    <td><%= total_return_visitors %></td>
-    <td><%= total_visits %></td>
-    <td><%= total_unique_visitors %></td>
+    <td><%= number_with_delimiter(total_page_views) %></td>
+    <td><%= number_with_delimiter(total_new_visitors) %></td>
+    <td><%= number_with_delimiter(total_return_visitors) %></td>
+    <td><%= number_with_delimiter(total_visits) %></td>
+    <td><%= number_with_delimiter(total_unique_visitors) %></td>
   </tr>
 </table>
 <%= will_paginate @page_views %>
