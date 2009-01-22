@@ -9,18 +9,16 @@ class Reports::BaseController < ApplicationController
   private
   
     def initialization
-    
       if session[:controller] != params[:controller]
         params[:page] = 1
         params[:order] = "page_views desc"
         session[:controller] = params[:controller]
       end
-    
-      @domain_list = PageView.domain_list
       params.delete(:domain) if params[:domain].blank?
       params[:order] ||= "page_views desc"
       params[:time_span] ||= "Last 3 hours"
       eval(params[:time_span].downcase.split(" ").join("_"))
+      @domain_list = PageView.domain_list(params)      
     end
     
     def last_1_hour
