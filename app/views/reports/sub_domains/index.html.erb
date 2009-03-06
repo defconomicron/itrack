@@ -1,0 +1,39 @@
+<table>
+  <tr>
+    <th><%= sort_control("Sub-Domain", "sub_domain asc") %></th>
+    <th><%= sort_control("Page Views", "page_views desc") %></th>
+    <th><%= sort_control("New Visitors", "new_visitors desc") %></th>
+    <th><%= sort_control("Return Visitors", "return_visitors desc") %></th>
+    <th><%= sort_control("Visits", "visits desc") %></th>
+    <th><%= sort_control("Unique Visitors", "unique_visitors desc") %></th>
+  </tr>
+  <% total_page_views = 0 %>
+  <% total_new_visitors = 0 %>
+  <% total_return_visitors = 0 %>
+  <% total_visits = 0 %>
+  <% total_unique_visitors = 0 %>
+  <% @page_views.each do |page_view| %>
+    <tr>
+      <td><%=link_to page_view.sub_domain || "", params.merge(:controller => :traffic, :sub_domain => page_view.sub_domain, :page => nil) %></td>
+      <td><%= number_with_delimiter(page_view.page_views) %></td>
+      <td><%= number_with_delimiter(page_view.new_visitors) %></td>
+      <td><%= number_with_delimiter(page_view.return_visitors) %></td>
+      <td><%= number_with_delimiter(page_view.visits) %></td>
+      <td><%= number_with_delimiter(page_view.unique_visitors) %></td>
+      <% total_page_views += page_view.page_views.to_i %>
+      <% total_new_visitors += page_view.new_visitors.to_i %>
+      <% total_return_visitors += page_view.return_visitors.to_i %>
+      <% total_visits += page_view.visits.to_i %>
+      <% total_unique_visitors += page_view.unique_visitors.to_i %>
+    </tr>
+  <% end %>
+  <tr>
+    <td><b>Total:</b></td>
+    <td><%= number_with_delimiter(total_page_views) %></td>
+    <td><%= number_with_delimiter(total_new_visitors) %></td>
+    <td><%= number_with_delimiter(total_return_visitors) %></td>
+    <td><%= number_with_delimiter(total_visits) %></td>
+    <td><%= number_with_delimiter(total_unique_visitors) %></td>
+  </tr>
+</table>
+<%= will_paginate @page_views %>
