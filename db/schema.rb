@@ -13,6 +13,7 @@ ActiveRecord::Schema.define(:version => 20081224025810) do
 
   create_table "page_views", :force => true do |t|
     t.string   "domain"
+    t.string   "sub_domain"
     t.string   "url"
     t.string   "ip_address"
     t.string   "cookie_id"

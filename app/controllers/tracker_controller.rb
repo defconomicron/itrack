@@ -5,6 +5,7 @@ class TrackerController < ApplicationController
     PageView.create(
                       {
                         :domain               => domain,
+                        :sub_domain           => sub_domain,
                         :url                  => url,
                         :ip_address           => ip_address,
                         :new_visitor          => is_new_visitor?,
@@ -29,6 +30,10 @@ class TrackerController < ApplicationController
   
   private
   
+    def sub_domain
+      referer.split("/")[2] if referer
+    end
+  
     def domain
       referer.split("/")[2].split(".")[-2..-1].join(".") if referer      
     end
@@ -38,10 +43,7 @@ class TrackerController < ApplicationController
     end
     
     def ip_address
-      request.env["HTTP_X_FORWARDED_FOR"] ||
-      request.env["REMOTE_HOST"] ||
-      request.env["REMOTE_ADDR"] ||
-      "0.0.0.0"
+      request.remote_ip
     end
     
     def is_new_visitor?
