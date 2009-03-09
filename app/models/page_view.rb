@@ -1,34 +1,36 @@
 class PageView < ActiveRecord::Base
-  def self.traffic(params)  
+  def self.conditions(params)
     conditions1 = []
     conditions1 << "created_at >= :start_time"    
     conditions1 << "created_at <= :end_time"
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "region = :region" if params[:region]
-    conditions1 << "city = :city" if params[:city]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-    
+    conditions1 << "domain = :domain"                             if params[:action] != "domains" && params[:domain]
+    conditions1 << "sub_domain = :sub_domain"                     if params[:action] != "sub_domains" && params[:sub_domain]
+    conditions1 << "url = :url"                                   if params[:action] != "urls" && params[:url]
+    conditions1 << "country = :country"                           if params[:action] != "countries" && params[:country]
+    conditions1 << "region = :region"                             if params[:action] != "regions" && params[:region]
+    conditions1 << "city = :city"                                 if params[:action] != "cities" && params[:city]
+    conditions1 << "http_user_agent = :http_user_agent"           if params[:action] != "http_user_agents" && params[:http_user_agent]
+    conditions1 << "http_accept_language = :http_accept_language" if params[:action] != "http_accept_languages" && params[:http_accept_language]
     conditions1 = conditions1.join(" and ")
     
     conditions2 = {}
     conditions2.merge!(:start_time => params[:start_time])
     conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:region => params[:region]) if params[:region]
-    conditions2.merge!(:city => params[:city]) if params[:city]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
+    conditions2.merge!(:domain => params[:domain])                              if params[:action] != "domains" && params[:domain]
+    conditions2.merge!(:sub_domain => params[:sub_domain])                      if params[:action] != "sub_domains" && params[:sub_domain]
+    conditions2.merge!(:url => params[:url])                                    if params[:action] != "urls" && params[:url]
+    conditions2.merge!(:country => params[:country])                            if params[:action] != "countries" && params[:country]
+    conditions2.merge!(:region => params[:region])                              if params[:action] != "regions" && params[:region]
+    conditions2.merge!(:city => params[:city])                                  if params[:action] != "cities" && params[:city]
+    conditions2.merge!(:http_user_agent => params[:http_user_agent])            if params[:action] != "http_user_agents" && params[:http_user_agent]
+    conditions2.merge!(:http_accept_language => params[:http_accept_language])  if params[:action] != "http_accept_languages" && params[:http_accept_language]
 
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    sanitize_sql_array([ conditions1, conditions2 ])  
+  end
+
+  def self.traffic(params)
+    where = conditions(params)
     strftime = sanitize_sql_array(["%s", params[:strftime]])
-    
     find_by_sql("
       select
         strftime('#{strftime}', created_at) as created_at,
@@ -57,33 +59,8 @@ class PageView < ActiveRecord::Base
   end
   
   def self.http_accept_languages(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]    
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "region = :region" if params[:region]
-    conditions1 << "city = :city" if params[:city]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:region => params[:region]) if params[:region]
-    conditions2.merge!(:city => params[:city]) if params[:city]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           http_accept_language,
@@ -128,33 +105,8 @@ class PageView < ActiveRecord::Base
   end
   
   def self.http_user_agents(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "region = :region" if params[:region]
-    conditions1 << "city = :city" if params[:city]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-    
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]    
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:region => params[:region]) if params[:region]
-    conditions2.merge!(:city => params[:city]) if params[:city]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
-
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           http_user_agent,
@@ -199,32 +151,8 @@ class PageView < ActiveRecord::Base
   end
   
   def self.domains(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "region = :region" if params[:region]
-    conditions1 << "city = :city" if params[:city]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:region => params[:region]) if params[:region]
-    conditions2.merge!(:city => params[:city]) if params[:city]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
-
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           domain,
@@ -269,32 +197,8 @@ class PageView < ActiveRecord::Base
   end
 
   def self.sub_domains(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "region = :region" if params[:region]
-    conditions1 << "city = :city" if params[:city]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:region => params[:region]) if params[:region]
-    conditions2.merge!(:city => params[:city]) if params[:city]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
-
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           sub_domain,
@@ -339,30 +243,7 @@ class PageView < ActiveRecord::Base
   end
 
   def self.urls(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "region = :region" if params[:region]
-    conditions1 << "city = :city" if params[:city]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]    
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:region => params[:region]) if params[:region]
-    conditions2.merge!(:city => params[:city]) if params[:city]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
-
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
 
     paginate_by_sql("
@@ -409,28 +290,8 @@ class PageView < ActiveRecord::Base
   end
     
   def self.countries(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
- 
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           country,
@@ -475,30 +336,8 @@ class PageView < ActiveRecord::Base
   end
 
   def self.regions(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"    
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
-
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           country,
@@ -546,33 +385,8 @@ class PageView < ActiveRecord::Base
   end
 
   def self.cities(params)
-    conditions1 = []
-    conditions1 << "created_at >= :start_time"    
-    conditions1 << "created_at <= :end_time"    
-    conditions1 << "domain = :domain" if params[:domain]
-    conditions1 << "sub_domain = :sub_domain" if params[:sub_domain]
-    conditions1 << "url = :url" if params[:url]
-    conditions1 << "country = :country" if params[:country]
-    conditions1 << "region = :region" if params[:region]
-    conditions1 << "http_user_agent = :http_user_agent" if params[:http_user_agent]
-    conditions1 << "http_accept_language = :http_accept_language" if params[:http_accept_language]
-
-    conditions1 = conditions1.join(" and ")
-    
-    conditions2 = {}
-    conditions2.merge!(:start_time => params[:start_time])
-    conditions2.merge!(:end_time => params[:end_time])
-    conditions2.merge!(:domain => params[:domain]) if params[:domain]
-    conditions2.merge!(:sub_domain => params[:sub_domain]) if params[:sub_domain]
-    conditions2.merge!(:url => params[:url]) if params[:url]
-    conditions2.merge!(:country => params[:country]) if params[:country]
-    conditions2.merge!(:region => params[:region]) if params[:region]
-    conditions2.merge!(:http_user_agent => params[:http_user_agent]) if params[:http_user_agent]
-    conditions2.merge!(:http_accept_language => params[:http_accept_language]) if params[:http_accept_language]
-
-    where = sanitize_sql_array([ conditions1, conditions2 ])
+    where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           country,
