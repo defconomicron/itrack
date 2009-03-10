@@ -23,7 +23,7 @@ class TrackerController < ApplicationController
                    )
     
     new_visitor
-    new_visit    
+    new_visit
     
     render :file => "#{RAILS_ROOT}/public/images/spacer.gif"
   end
