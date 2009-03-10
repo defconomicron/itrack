@@ -245,7 +245,6 @@ class PageView < ActiveRecord::Base
   def self.urls(params)
     where = conditions(params)
     order = sanitize_sql_array(["%s", params[:order]])
-
     paginate_by_sql("
         select
           url,
