@@ -31,15 +31,15 @@ class TrackerController < ApplicationController
   private
   
     def sub_domain
-      referer.split("/")[2] if referer
+      request.referer.split("/")[2] if request.referer
     end
   
     def domain
-      referer.split("/")[2].split(".")[-2..-1].join(".") if referer      
+      request.referer.split("/")[2].split(".")[-2..-1].join(".") if request.referer      
     end
     
     def url
-      referer
+      request.referer
     end
     
     def ip_address
@@ -72,10 +72,6 @@ class TrackerController < ApplicationController
     
     def unique(t)
       ([t, domain, url] * "").sha1
-    end
-    
-    def referer
-      request.env["HTTP_REFERER"]
     end
     
     def http_accept_language
