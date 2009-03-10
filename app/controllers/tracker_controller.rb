@@ -71,7 +71,7 @@ class TrackerController < ApplicationController
     end
     
     def unique(t)
-      ([t, domain, url] * "").sha1
+      ([t, url] * "").sha1
     end
     
     def http_accept_language
