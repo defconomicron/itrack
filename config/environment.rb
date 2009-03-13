@@ -75,5 +75,5 @@ Rails::Initializer.run do |config|
 
   require 'classes'
   require 'geoip'
-  GEO_IP = GeoIP.new("#{RAILS_ROOT}/geo_ip/GeoIP.dat", :GEOIP_MEMORY_CACHE)
+  GEO_IP = GeoIP.new("#{RAILS_ROOT}/geo_ip/GeoIPCity.dat", :GEOIP_MEMORY_CACHE)
 end

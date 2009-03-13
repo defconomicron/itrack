@@ -10,21 +10,29 @@
     <% end %>
     
   </categories>
-
-  <dataset seriesName='Page Views'>
-    <% @page_views.each do |page_view| %><set value='<%= page_view.page_views %>' /><% end %>
-  </dataset>
-
-  <dataset seriesName='New Visitors'>
-    <% @page_views.each do |page_view| %><set value='<%= page_view.new_visitors %>' /><% end %>
-  </dataset>
   
-  <dataset seriesName='Return Visitors'>
-    <% @page_views.each do |page_view| %><set value='<%= page_view.return_visitors %>' /><% end %>
-  </dataset>
-    
-  <dataset seriesName='Visits'>
-    <% @page_views.each do |page_view| %><set value='<%= page_view.visits %>' /><% end %>
-  </dataset>
+  <% if params[:show_page_views] == "1" %>
+    <dataset seriesName='Page Views'>
+      <% @page_views.each do |page_view| %><set value='<%= page_view.page_views %>' /><% end %>
+    </dataset>
+  <% end %>
+  
+  <% if params[:show_new_visitors] == "1" %>
+    <dataset seriesName='New Visitors'>
+      <% @page_views.each do |page_view| %><set value='<%= page_view.new_visitors %>' /><% end %>
+    </dataset>
+  <% end %>
+  
+  <% if params[:show_return_visitors] == "1" %>
+    <dataset seriesName='Return Visitors'>
+      <% @page_views.each do |page_view| %><set value='<%= page_view.return_visitors %>' /><% end %>
+    </dataset>
+  <% end %>
+  
+  <% if params[:show_visits] == "1" %>
+    <dataset seriesName='Visits'>
+      <% @page_views.each do |page_view| %><set value='<%= page_view.visits %>' /><% end %>
+    </dataset>
+  <% end %>
   
 </chart>

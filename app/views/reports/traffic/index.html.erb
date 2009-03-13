@@ -1,3 +1,21 @@
+<% a = params.merge(:action => "search") %>
+<% a.delete(:show_page_views) %>
+<% a.delete(:show_new_visitors) %>
+<% a.delete(:show_return_visitors) %>
+<% a.delete(:show_visits) %>
+
+<% form_tag(a) do %>
+  <%= check_box_tag("show_page_views", "1", params[:show_page_views] == "1") %> Page Views
+  <%= hidden_field_tag("show_page_views", "0") %>
+  <%= check_box_tag("show_new_visitors", "1", params[:show_new_visitors] == "1") %> New Visitors
+  <%= hidden_field_tag("show_new_visitors", "0") %>
+  <%= check_box_tag("show_return_visitors", "1", params[:show_return_visitors] == "1") %> Return Visitors
+  <%= hidden_field_tag("show_return_visitors", "0") %>
+  <%= check_box_tag("show_visits", "1", params[:show_visits] == "1") %> Visits
+  <%= hidden_field_tag("show_visits", "0") %>
+  <%= submit_tag "Go" %>
+<% end %>
+
 <%= renderChartHTML("/FusionCharts/MSLine.swf", "", render(:partial => "traffic"), "traffic", "100%", 600, false) %>
 
 <%= render :partial => "stats" %>

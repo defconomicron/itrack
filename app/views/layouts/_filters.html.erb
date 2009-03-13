@@ -19,12 +19,12 @@
     <%= [format_datetime(params[:start_time]), format_datetime(params[:end_time])] * " - " %>
   </center>
         
-  <% if (params.keys - %w{start_time end_time period controller action commit labelStep strftime time_span order page}).length != 0 %>
+  <% if (params.keys - %w{show_page_views show_new_visitors show_return_visitors show_visits start_time end_time period controller action commit labelStep strftime time_span order page}).length != 0 %>
     <b>Filters:</b>
   
     <ul>
       <% params.keys.each do |key| %>
-        <% next if %w{start_time end_time period controller action commit labelStep strftime time_span order page}.include?(key) %>
+        <% next if %w{show_page_views show_new_visitors show_return_visitors show_visits start_time end_time period controller action commit labelStep strftime time_span order page}.include?(key) %>
         <li>
           <%= link_to "#{key} = #{params[key]}", params.merge(:controller => params[:controller], :action => params[:action], key => nil) %>
         </li>

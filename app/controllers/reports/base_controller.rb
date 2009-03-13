@@ -9,6 +9,10 @@ class Reports::BaseController < ApplicationController
   private
   
     def initialization
+      params[:show_page_views] ||= "1"
+      params[:show_new_visitors] ||= "1"
+      params[:show_return_visitors] ||= "1"
+      params[:show_visits] ||= "1"
       if session[:controller] != params[:controller]
         params[:page] = 1
         params[:order] = "page_views desc"
